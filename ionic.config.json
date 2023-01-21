@@ -1,0 +1,7 @@
+{
+  "name": "SkyView",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
