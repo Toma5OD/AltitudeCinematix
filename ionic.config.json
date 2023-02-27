@@ -1,7 +1,5 @@
 {
-  "name": "SkyView",
-  "integrations": {
-    "capacitor": {}
-  },
+  "name": "ionic-react-firebase",
+  "integrations": {},
   "type": "react"
 }

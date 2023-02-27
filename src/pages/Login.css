@@ -1,0 +1,71 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    --ion-background-color: #e8f5e9;
+  }
+  
+  .login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --ion-background-color: #e8f5e9;
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5F5DC;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    height: 600px;
+    margin: 10% auto 0;
+  }
+  
+  .login-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #74442e;
+    text-align: center;
+    margin-top: 16px;
+  }
+  
+  .login-input {
+    margin: 10px 0;
+    width: 100%;
+  }
+  
+  .login-button {
+    width: 48%;
+    font-family: 'Montserrat', sans-serif;
+    --background: #74442e;
+    --background-hover: #000000;
+    --background-activated: #343A40;
+    --background-focused: #343A40;
+    
+    --color: #ffffff;
+    --color-hover: #e9c37a;
+    
+    --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
+  }
+  
+  p {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  
+  @media screen and (max-width: 576px) {
+    .login-container {
+      padding: 30px;
+    }
+  }
+  
