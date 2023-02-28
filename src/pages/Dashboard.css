@@ -1,48 +1,66 @@
-.word {
-  display: inline-block;
-  padding: 2px 3px;
-  margin: 0 2px;
-  background: #eee;
-  border-radius: 6px;
-}
-
-.correct {
-  color: green;
-}
-
-.incorrect {
-  color: red;
-}
-
-.done {
-  font-weight: bold;
-}
-
-.active {
-  background-color: yellow;
-}
-
-.word-list {
+.background {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  --ion-background-color: #e8f5e9;
 }
 
-input {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  width: 100%;
-  margin-bottom: 20px;
+ion-toolbar {
+  display: flex;
+  justify-content: space-between;
 }
 
-.logout-btn {
-  margin-top: 20px;
-  background-color: #f44336;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 10px;
-  font-size: 16px;
+ion-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+}
+
+ion-button {
+  font-family: 'Montserrat', sans-serif;
+  --background: #93e9be;
+}
+
+.video-card {
+  padding: 20px;
+}
+
+.logout-button-container {
+  margin-left: auto;
+  padding-right: 16px;
+}
+
+.video-feed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5DC;
+  max-width: 100%;
+  height: 100%;
+  padding: 16px;
+  text-align: left;
+}
+
+.video-feed h1 {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+
+h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #74442e;
+  text-align: center;
+  margin-top: 16px;
+}
+
+video {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 16px 0;
 }

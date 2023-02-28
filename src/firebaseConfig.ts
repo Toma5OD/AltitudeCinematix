@@ -1,9 +1,11 @@
 import firebase from "firebase/app";
+import 'firebase/database';
 import { toast } from "./toast";
 
 const config = {
   apiKey: "AIzaSyByFnJuj8qpCj-DxNa7OvSHfgHbWmy76B4",
   authDomain: "altitudecinematix.firebaseapp.com",
+  databaseURL: 'https://altitudecinematix-default-rtdb.europe-west1.firebasedatabase.app/',
   projectId: "altitudecinematix",
   storageBucket: "altitudecinematix.appspot.com",
   messagingSenderId: "149776768071",
