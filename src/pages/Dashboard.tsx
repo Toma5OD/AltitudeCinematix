@@ -18,6 +18,7 @@ const Dashboard: React.FC = () => {
 	const [busy, setBusy] = useState(false);
 	const username = useSelector((state: any) => state.user.username);
 	const history = useHistory();
+	const toolbarHeight = 56; // set the height of the toolbar here
 
 	async function logout() {
 		setBusy(true);
@@ -30,7 +31,10 @@ const Dashboard: React.FC = () => {
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					<IonTitle>Dashboard</IonTitle>
+					<div className="toolbar-content">
+						<IonTitle>Dashboard</IonTitle>
+						<h1 className="welcome-message">Welcome to your video feed, {username}</h1>
+					</div>
 					<div slot="end" className="logout-button-container">
 						<IonButton onClick={logout}>Logout</IonButton>
 					</div>
@@ -43,17 +47,10 @@ const Dashboard: React.FC = () => {
 					isOpen={busy}
 				/>
 
-				{/* Here you can add your video feed component */}
-				{/* You can style it with the className "video-feed" */}
-				{/* You can also add other components or elements as needed */}
 				<div className="video-feed">
-					<h1>Welcome to your video feed, {username}</h1>
-					<div className="video-feed">
-						<div className="video-card">
-							<VideoCard />
-						</div>
+					<div className="video-card">
+						<VideoCard toolbarHeight={toolbarHeight} />
 					</div>
-
 				</div>
 			</IonContent>
 		</IonPage>
