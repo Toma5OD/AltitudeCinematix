@@ -6,6 +6,7 @@ import {
 	IonToolbar,
 	IonButton,
 	IonLoading,
+	IonRouterLink
 } from "@ionic/react";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -18,7 +19,7 @@ const Dashboard: React.FC = () => {
 	const [busy, setBusy] = useState(false);
 	const username = useSelector((state: any) => state.user.username);
 	const history = useHistory();
-	const toolbarHeight = 56; // set the height of the toolbar here
+
 
 	async function logout() {
 		setBusy(true);
@@ -30,11 +31,20 @@ const Dashboard: React.FC = () => {
 	return (
 		<IonPage>
 			<IonHeader>
-				<IonToolbar>
+				<IonToolbar style={{ height: '7.5vh' }}>
 					<div className="toolbar-content">
-						<IonTitle>Dashboard</IonTitle>
-						<h1 className="welcome-message">Welcome to your video feed, {username}</h1>
+						<div className="title-container">
+							<IonTitle>Dashboard</IonTitle>
+						</div>
+						<div className="welcome-container">
+							<h1 className="welcome-message">Welcome to your video feed, {username}</h1>
+						</div>
 					</div>
+					<IonRouterLink routerLink="/userProfile">
+						<div slot="end" className="profile-button-container">
+							<IonButton>user profile</IonButton>
+						</div>
+					</IonRouterLink>
 					<div slot="end" className="logout-button-container">
 						<IonButton onClick={logout}>Logout</IonButton>
 					</div>
@@ -49,7 +59,7 @@ const Dashboard: React.FC = () => {
 
 				<div className="video-feed">
 					<div className="video-card">
-						<VideoCard toolbarHeight={toolbarHeight} />
+						<VideoCard />
 					</div>
 				</div>
 			</IonContent>

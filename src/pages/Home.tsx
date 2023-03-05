@@ -16,8 +16,8 @@ const Home: React.FC = () => {
 	}, [input]);
 
 	return (
-		<IonPage className="background">
-			<IonContent className="home-page">
+		<IonPage className="home-background">
+			<IonContent>
 				<div className="home-container">
 					<IonText className="title">AltitudeCinematix</IonText>
 					<img src={process.env.PUBLIC_URL + "/ACxLogoTrans.png"} alt="Logo" className="home-logo" />

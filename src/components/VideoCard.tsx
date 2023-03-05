@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { IonSlides, IonSlide, IonInfiniteScroll } from "@ionic/react";
 import "./VideoCard.css";
 
-interface Props {
-  toolbarHeight: number;
-}
-
-const VideoCard: React.FC<Props> = ({ toolbarHeight }) => {
+const VideoCard: React.FC = () => {
   const [videos] = useState<string[]>([
     "https://www.youtube.com/embed/RNKWoqDlbxc",
     "https://www.youtube.com/embed/NSHUiZp2aaY",
@@ -18,12 +14,6 @@ const VideoCard: React.FC<Props> = ({ toolbarHeight }) => {
     "https://www.youtube.com/embed/XRIndzl5T3U", // Flying over Enchanted Forest 4K - Aerial Drone Film w/ Celtic Music
   ]);
 
-  const [iframeHeight, setIframeHeight] = useState<number>(0);
-
-  useEffect(() => {
-    setIframeHeight(window.innerHeight - toolbarHeight);
-  }, [toolbarHeight]);
-
   return (
     <div className="video-feed">
       <IonInfiniteScroll>
@@ -34,7 +24,7 @@ const VideoCard: React.FC<Props> = ({ toolbarHeight }) => {
                 src={videoUrl}
                 title="YouTube video player"
                 allowFullScreen
-                style={{ height: iframeHeight }}
+                style={{ height: '92.5vh' }}
               ></iframe>
             </IonSlide>
           ))}

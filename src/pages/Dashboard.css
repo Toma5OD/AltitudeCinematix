@@ -1,116 +1,55 @@
 ion-title {
   font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  padding: 10px;
+  font-size: 2rem;
+}
+
+.toolbar-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 7.5vh;
+  flex-grow: 1;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+}
+
+.welcome-container {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  flex-direction: column;
+}
+
+.welcome-message {
+  margin-left: 1rem; 
+  font-size: 1.125rem;
+  font-weight: normal;
+  color: #fff;
+}
+
+.profile-button-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile-button-container ion-button {
+	margin-right: 16px;
+}
+
+
+.logout-button-container {
+  display: flex;
+  align-items: center;
 }
 
 ion-button {
   font-family: 'Montserrat', sans-serif;
   --background: #93e9be;
-}
-
-.toolbar-content {
   display: flex;
   align-items: center;
-  margin: 0;
-  padding: 0;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.toolbar-content .welcome-message {
-  margin: 0;
-  padding: 0;
-  font-size: 18px;
-  font-weight: normal;
-  color: #fff;
-}
-
-
-.logout-button-container {
-  margin-left: auto;
-  padding-right: 16px;
-}
-
-.user-container {
-  margin-left: auto;
-  color: #fffbf9;
-  padding-right: 16px;
-  --background: #93e9be;
-}
-
-ion-slide video {
-  height: 100%;
-  max-width: 100%;
-  object-fit: cover;
-}
-
-
-ion-slide {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-ion-slide video {
-  height: 100%;
-  max-width: 100%;
-  object-fit: contain;
-}
-
-
-.video-feed {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffffff;
-  max-width: 100%;
-  height: 100%; /* add this line */
-  padding: 0;
-  margin: 0;
-}
-
-
-.video-card {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-video {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-
-h1 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  font-weight: bold;
-  color: #fffbf9;
-  text-align: center;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.video-feed h1 {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-}
-
-video {
-  max-width: 100%;
-  max-height: 100%;
-  margin: 16px 0;
-  overflow-x: auto;
-  overflow-y: hidden;
+  margin-right: 1rem;
 }

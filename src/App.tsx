@@ -26,6 +26,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import { getCurrentUser } from "./firebaseConfig";
 import firebase from "firebase";
+
 import { useDispatch } from "react-redux";
 import { setUserState } from "./redux/actions";
 import Dashboard from "./pages/Dashboard";

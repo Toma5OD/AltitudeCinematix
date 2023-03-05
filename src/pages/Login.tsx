@@ -5,7 +5,6 @@ import {
 	IonButton,
 	IonItem,
 	IonText,
-	IonLabel,
 	IonCard,
 	IonCardContent,
 	IonLoading
@@ -38,45 +37,44 @@ const Login: React.FC = () => {
 	}
 
 	return (
-		<IonPage className="background">
-			<IonContent className="login-page">
-				<div className="login-container">
-					<IonText className="login-title">Login</IonText>
-					<IonLoading message="Please wait.." duration={0} isOpen={busy} />
-					<IonCard>
-						<IonCardContent>
-							<IonItem class="custom">
-								<IonLabel position="floating">Email</IonLabel>
-								<IonInput
-									type="email"
-									placeholder="Enter your email"
-									onIonChange={(e: any) => setUsername(e.target.value)}
-									clearInput
-									color="dark"
-								/>
-							</IonItem>
-							<IonItem class="custom">
-								<IonLabel position="floating">Password</IonLabel>
-								<IonInput
-									type="password"
-									placeholder="Enter your password"
-									onIonChange={(e: any) => setPassword(e.target.value)}
-									clearOnEdit
-									color="dark"
-								/>
-							</IonItem>
-							<div className="login-button-container">
-								<IonButton onClick={login} expand="block" color="primary">Login</IonButton>
+		<IonPage>
+			<div className="login-background">
+				<IonContent className="centre-column">
+					<div className="login-box">
+						<IonText className="login-title text-center">Login</IonText>
+						<IonLoading message="Please wait.." duration={0} isOpen={busy} />
+						<IonCard>
+							<div className="custom">
+								<IonCardContent>
+									<IonItem>
+										<IonInput
+											placeholder="Enter your email"
+											onIonChange={(e: any) => setUsername(e.target.value)}
+											clearInput
+											class="custom"
+										/>
+									</IonItem>
+									<IonItem>
+										<IonInput
+											placeholder="Enter your password"
+											onIonChange={(e: any) => setPassword(e.target.value)}
+											clearOnEdit
+											class="custom"
+										/>
+									</IonItem>
+									<div>
+										<IonButton className="login-button" onClick={login} expand="block">Login</IonButton>
+									</div>
+									<p className="register-link">
+										New here? <Link to="/register">Register</Link>
+									</p>
+								</IonCardContent>
 							</div>
-							<p className="register-link">
-								New here? <Link to="/register">Register</Link>
-							</p>
-						</IonCardContent>
-					</IonCard>
-				</div>
-			</IonContent>
+						</IonCard>
+					</div>
+				</IonContent>
+			</div>
 		</IonPage>
-
 	);
 };
 

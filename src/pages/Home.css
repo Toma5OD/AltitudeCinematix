@@ -1,23 +1,10 @@
-
-.home-page {
+.home-background {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  text-align: center;
-  --ion-background-color: #000000;
+  height: 100vh;
+  background-color: #000000;
 }
-
-.title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  font-weight: bold;
-  color: #74442e;
-  text-align: center;
-  margin-top: 16px;
-}
-
 
 .home-container {
   display: flex;
@@ -25,22 +12,34 @@
   justify-content: center;
   align-items: center;
   background-color: #F5F5DC;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  height: 600px;
-  margin: 10% auto 0;
+  padding: 1em;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 0.5em rgba(0, 0, 0, 0.1);
+  max-width: 38rem;
+  height: 38rem;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #74442e;
+  margin-top: 1em;
 }
 
 .home-logo {
-  height: 400px;
+  height: 40vw;
+  max-height: 25rem;
 }
 
 .home-buttons-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 24px;
+  margin-top: 1.5em;
   width: 100%;
 }
 
@@ -55,8 +54,8 @@
   --color: #ffffff;
   --color-hover: #e9c37a;
   
-  --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
-  }
+  --box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
+}
 
 .home-button2 {
   width: 48%;
@@ -67,11 +66,5 @@
   --background-activated: #88f4be;
   --background-focused: #88f4be;
   --color-hover: #e9c37a;
-  --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
-  }
-
-@media screen and (max-width: 576px) {
-  .home-container {
-    padding: 30px;
-  }
+  --box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
 }

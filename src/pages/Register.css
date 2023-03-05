@@ -6,6 +6,10 @@
     height: 100%;
     text-align: center;
   }
+
+  .custom {
+    color:#000000;
+  }
   
   .register-page {
     display: flex;
@@ -14,12 +18,33 @@
     --ion-background-color: #000000;
   }
   
-  ion-input {
-    --background: green;
-    --padding-start: 10px;
+  .custom {
+    background-color: #F5F5DC;
+  }
+
+  
+  .custom-input {
+    --color: black;
+  }
+
+  ion-item {
+    --background: #F5F5DC;
+    --border-color: #fff;
+    --detail-icon-color: white;
+    --detail-icon-opacity: 1;
+    --detail-icon-font-size: 20px;
+  }
+
+  ion-input.custom-input {
+    --background: #373737;
+    --color: #fff;
+    --placeholder-color: #ddd;
+    --placeholder-opacity: .8;
+  
+    --padding-bottom: 10px;
     --padding-end: 10px;
-    --padding-top: 5px;
-    --padding-bottom: 5px;
+    --padding-start: 10px;
+    --padding-top: 10px;
   }
   
   .register-container {
@@ -47,10 +72,8 @@
   }
   
   .register-input {
-    margin: 10px 0;
-    width: 90%;
-    height: 50px;
     background-color: #fff;
+    color: #000000;
   }
   
   .register-button {

@@ -45,16 +45,20 @@ export async function loginUser(username: string, password: string) {
 	}
 }
 
-export async function registerUser(username: string, password: string) {
-	const email = `${username}`;
+export const registerUser = async (username: string, password: string, firstName: string, lastName: string, phoneNumber: string) => {
 	try {
-		const res = await firebase
-			.auth()
-			.createUserWithEmailAndPassword(email, password);
-
-		return res;
+	  const res = await firebase.auth().createUserWithEmailAndPassword(username, password);
+	  await firebase.database().ref(`users/${res.user?.uid}`).set({
+		email: username,
+		firstName,
+		lastName,
+		phoneNumber,
+		userId: res.user?.uid,
+	  });
+	  return res;
 	} catch (error) {
-		toast(error.message, 4000);
-		return false;
+	  console.log(error);
+	  return null;
 	}
-}
+  };
+  

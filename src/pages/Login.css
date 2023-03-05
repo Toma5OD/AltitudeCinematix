@@ -1,70 +1,99 @@
-.background {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
+.login-background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.centre-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 38rem;
+  height: auto;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #F5F5DC;
+}
+
+.login-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5DC;
+  padding: 1em;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 0.5em rgba(0, 0, 0, 0.1);
+  max-width: 38rem;
+  height: auto;
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #F5F5DC;
+  height: 60vh;
+}
+
+.login-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3vw;
+  font-weight: bold;
+  color: #74442e;
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.custom {
+  background-color: #F5F5DC;
+}
+
+ion-item {
+  --background: #F5F5DC;
+  --border-color: #fff;
+  --detail-icon-color: white;
+  --detail-icon-opacity: 1;
+  --detail-icon-font-size: 20px;
+}
+
+.login-button {
+  font-family: 'Montserrat', sans-serif;
+  --background: #74442e;
+  --background-hover: #000000;
+  --background-activated: #343A40;
+  --background-focused: #343A40;
+  color: #ffffff;
+  --color-hover: #e9c37a;
+  --box-shadow: 0.33vw 0.33vw 0.8vw 0 rgb(0, 0, 0, 0.25);
+}
+
+p {
+  margin-top: 2.5vw;
+  font-size: 0.8rem;
+  text-align: center;
+  color: #000000;
+}
+
+@media screen and (max-width: 576px) {
+  .login-box {
+    padding: 7.5vw;
+    max-width: 100vw;
+    height: auto;
   }
-  
-  .login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    --ion-background-color: #000000;
-  }
-  
-  .login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #F5F5DC;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    height: 600px;
-    margin: 10% auto 0;
-  }
-  
+
   .login-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    font-weight: bold;
-    color: #74442e;
-    text-align: center;
-    margin-top: 16px;
+    font-size: 6vw;
+    margin-top: 5vw;
   }
-  
-  .login-input {
-    margin: 10px 0;
-    width: 100%;
-  }
-  
-  .login-button {
-    width: 48%;
-    font-family: 'Montserrat', sans-serif;
-    --background: #74442e;
-    --background-hover: #000000;
-    --background-activated: #343A40;
-    --background-focused: #343A40;
-    
-    --color: #ffffff;
-    --color-hover: #e9c37a;
-    
-    --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25);
-  }
-  
+
   p {
-    margin-top: 20px;
-    font-size: 0.8rem;
-    text-align: center;
+    margin-top: 5vw;
   }
-  
-  @media screen and (max-width: 576px) {
-    .login-container {
-      padding: 30px;
-    }
-  }
-  
+}
