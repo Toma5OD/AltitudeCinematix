@@ -19,7 +19,7 @@ const Home: React.FC = () => {
 		<IonPage className="home-background">
 			<IonContent>
 				<div className="home-container">
-					<IonText className="title">AltitudeCinematix</IonText>
+					<IonText className="title-home">AltitudeCinematix</IonText>
 					<img src={process.env.PUBLIC_URL + "/ACxLogoTrans.png"} alt="Logo" className="home-logo" />
 					<div className="home-buttons-container">
 						<IonButton routerLink="/login" className="home-button">

@@ -1,55 +1,9 @@
-ion-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2rem;
-}
-
-.toolbar-content {
+.video-feed {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  height: 7.5vh;
-  flex-grow: 1;
-}
-
-.title-container {
-  display: flex;
-  align-items: center;
-}
-
-.welcome-container {
-  display: flex;
-  align-items: center;
-  margin-left: 1rem;
-  flex-direction: column;
-}
-
-.welcome-message {
-  margin-left: 1rem; 
-  font-size: 1.125rem;
-  font-weight: normal;
-  color: #fff;
-}
-
-.profile-button-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.profile-button-container ion-button {
-	margin-right: 16px;
-}
-
-
-.logout-button-container {
-  display: flex;
-  align-items: center;
-}
-
-ion-button {
-  font-family: 'Montserrat', sans-serif;
-  --background: #93e9be;
-  display: flex;
-  align-items: center;
-  margin-right: 1rem;
+  width: 10%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }

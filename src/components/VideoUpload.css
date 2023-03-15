@@ -1,0 +1,92 @@
+.video-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .video-upload-input {
+    display: none;
+  }
+  
+  .custom-file-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4a90e2;
+    height: 8vh;
+    width: 14vw;
+    color: white;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 0.3125rem;
+    font-size: 100%;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .custom-file-input i {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+  }
+  
+  .custom-file-input:hover {
+    background-color: #3a7ac9;
+  }
+  
+  .video-title-input {
+    width: 18.75rem;
+    height: 2.5rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem;
+    font-size: 1rem;
+    padding: 0 0.625rem;
+    margin: 1rem 0;
+  }
+  
+  .file-name-display {
+    font-size: 0.875rem;
+    margin-bottom: 0.625rem;
+    color: #8f8e8e;
+  }
+  
+  .video-upload-button {
+    background-color: #4a90e2;
+    border: none;
+    color: white;
+    padding: 0.625rem 1.25rem;
+    cursor: pointer;
+    border-radius: 0.3125rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .video-upload-progress {
+    width: 100%;
+    height: 1.25rem;
+    background-color: #f3f3f3;
+    border-radius: 0.625rem;
+    margin-top: 3rem;
+  }
+  
+  .video-upload-progress-bar {
+    height: 100%;
+    border-radius: 0.625rem;
+    background-image: repeating-linear-gradient(
+      45deg,
+      #ff4500,
+      #ff4500 0.625rem,
+      #ff8c00 0.625rem,
+      #ff8c00 1.25rem
+    );
+    animation: lava 3s linear infinite;
+  }
+  
+  @keyframes lava {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 3.125rem 3.125rem;
+    }
+  }
+  

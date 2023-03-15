@@ -27,7 +27,7 @@
     --color: black;
   }
 
-  ion-item {
+  .reg-item {
     --background: #F5F5DC;
     --border-color: #fff;
     --detail-icon-color: white;

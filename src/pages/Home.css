@@ -23,9 +23,9 @@
   transform: translateY(-50%);
 }
 
-.title {
+.title-home {
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   color: #74442e;
   margin-top: 1em;

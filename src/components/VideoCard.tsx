@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { IonSlides, IonSlide, IonInfiniteScroll } from "@ionic/react";
+import SwiperCore, { Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import "./VideoCard.css";
+
+SwiperCore.use([Navigation]);
 
 const VideoCard: React.FC = () => {
   const [videos] = useState<string[]>([
@@ -15,21 +18,26 @@ const VideoCard: React.FC = () => {
   ]);
 
   return (
-    <div className="video-feed">
-      <IonInfiniteScroll>
-        <IonSlides scrollbar={true} options={{ slidesPerView: "auto" }}>
-          {videos.map((videoUrl) => (
-            <IonSlide className="video-slide" key={videoUrl}>
+    <div className="video-card-feed">
+      <Swiper
+        slidesPerView={1}
+        loop={true}
+        navigation={true}
+        mousewheel={true}
+        direction={'horizontal'}
+      >
+        {videos.map((videoUrl) => (
+          <SwiperSlide key={videoUrl}>
+            <div className="swiper1">
               <iframe
                 src={videoUrl}
                 title="YouTube video player"
                 allowFullScreen
-                style={{ height: '92.5vh' }}
               ></iframe>
-            </IonSlide>
-          ))}
-        </IonSlides>
-      </IonInfiniteScroll>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };

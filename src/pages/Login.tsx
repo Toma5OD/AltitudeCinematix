@@ -27,14 +27,17 @@ const Login: React.FC = () => {
 	async function login() {
 		setBusy(true);
 		const res: any = await loginUser(username, password);
-		if (res) {
-			console.log("login res", res);
-			dispatch(setUserState(res.user.email));
-			history.replace("/dashboard");
-			toast("You have logged in");
+		if (res && res.user) { // check that res is not null and that res.user is not null
+		  console.log("login res", res);
+		  dispatch(setUserState(res.user.email));
+		  history.push("/dashboard");
+		  toast("You have logged in");
+		} else {
+		  console.error("User not found.");
 		}
 		setBusy(false);
-	}
+	  }	  
+	  
 
 	return (
 		<IonPage>
@@ -46,7 +49,7 @@ const Login: React.FC = () => {
 						<IonCard>
 							<div className="custom">
 								<IonCardContent>
-									<IonItem>
+									<IonItem class="login-item">
 										<IonInput
 											placeholder="Enter your email"
 											onIonChange={(e: any) => setUsername(e.target.value)}
@@ -54,7 +57,7 @@ const Login: React.FC = () => {
 											class="custom"
 										/>
 									</IonItem>
-									<IonItem>
+									<IonItem class="login-item">
 										<IonInput
 											placeholder="Enter your password"
 											onIonChange={(e: any) => setPassword(e.target.value)}

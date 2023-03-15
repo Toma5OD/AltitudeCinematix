@@ -5,6 +5,8 @@ import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import User from "./pages/UserDetails";
+import Upload from "./pages/Upload";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -30,8 +32,11 @@ import firebase from "firebase";
 import { useDispatch } from "react-redux";
 import { setUserState } from "./redux/actions";
 import Dashboard from "./pages/Dashboard";
+import PrivateRoute from './components/PrivateRoute';
 
 const RoutingSystem: React.FC = () => {
+	const auth = firebase.auth();
+
 	return (
 		<IonApp>
 			<IonReactRouter>
@@ -39,7 +44,9 @@ const RoutingSystem: React.FC = () => {
 					<Route path="/" component={Home} exact />
 					<Route path="/login" component={Login} exact />
 					<Route path="/register" component={Register} exact />
-					<Route path="/dashboard" component={Dashboard} exact />
+					<PrivateRoute path="/dashboard" component={Dashboard} exact />
+					<PrivateRoute path="/userProfile" component={User} exact />
+					<PrivateRoute path="/upload" component={Upload} exact />
 				</IonRouterOutlet>
 			</IonReactRouter>
 		</IonApp>
@@ -57,7 +64,6 @@ const App: React.FC = () => {
 				// logged in. Dispatch action from redux store in actions.ts file
 				dispatch(setUserState(user.email));
 				console.log(firebase.auth().currentUser?.email);
-				window.history.replaceState({}, "", "/dashboard");
 			} else {
 				window.history.replaceState({}, "", "/");
 			}
