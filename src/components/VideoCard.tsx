@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import SwiperCore, { Navigation } from 'swiper';
+import SwiperCore, { Navigation, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import "./VideoCard.css";
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation, Autoplay]);
 
 const VideoCard: React.FC = () => {
   const [videos] = useState<string[]>([
@@ -22,6 +22,7 @@ const VideoCard: React.FC = () => {
       <Swiper
         slidesPerView={1}
         loop={true}
+        loopedSlides={videos.length}
         navigation={true}
         mousewheel={true}
         direction={'horizontal'}
