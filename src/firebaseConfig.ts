@@ -19,7 +19,6 @@ export function getCurrentUser(): Promise<firebase.User | null> {
 	});
 }
 
-
 export function logoutUser() {
 	return firebase.auth().signOut();
 }
@@ -37,15 +36,19 @@ export async function loginUser(username: string, password: string) {
 	}
 }
 
-export const registerUser = async (username: string, password: string, firstName: string, lastName: string, phoneNumber: string) => {
+export const registerUser = async (
+	username: string,
+	password: string,
+	firstName: string,
+	lastName: string,
+	phoneNumber: string
+) => {
 	try {
 		const res = await firebase.auth().createUserWithEmailAndPassword(username, password);
 		await firebase.database().ref(`users/${res.user?.uid}`).set({
-			email: username,
 			firstName,
 			lastName,
 			phoneNumber,
-			userId: res.user?.uid,
 		});
 		return res;
 	} catch (error) {
@@ -92,19 +95,18 @@ export async function updateUserPassword(newPassword: string) {
 
 export async function reauthenticateUser(password: string) {
 	try {
-	  const currentUser = firebase.auth().currentUser;
-	  if (!currentUser) {
-		throw new Error('No authenticated user found');
-	  }
-  
-	  const credential = firebase.auth.EmailAuthProvider.credential(currentUser.email!, password);
-	  await currentUser.reauthenticateWithCredential(credential);
-	} catch (error) {
-	  console.log(error);
-	  return null;
-	}
-  }  
+		const currentUser = firebase.auth().currentUser;
+		if (!currentUser) {
+			throw new Error('No authenticated user found');
+		}
 
+		const credential = firebase.auth.EmailAuthProvider.credential(currentUser.email!, password);
+		await currentUser.reauthenticateWithCredential(credential);
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
 
 export async function updateUserData(updates: { [key: string]: any }) {
 	try {
@@ -128,7 +130,6 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 	try {
 		const videoId = uuidv4();
 		const storageRef = firebase.storage().ref(`videos/${videoId}/${file.name}`);
-
 		const uploadTask = storageRef.put(file);
 
 		uploadTask.on(
@@ -168,7 +169,6 @@ export async function getUserVideos(userId: string): Promise<any[]> {
 	try {
 		const userVideosRef = firebase.database().ref("videos").orderByChild("userId").equalTo(userId);
 		const snapshot = await userVideosRef.once("value");
-
 		const videos: any[] = [];
 		snapshot.forEach((childSnapshot) => {
 			videos.push({ ...childSnapshot.val(), id: childSnapshot.key });
@@ -180,8 +180,3 @@ export async function getUserVideos(userId: string): Promise<any[]> {
 		return [];
 	}
 }
-
-
-
-
-

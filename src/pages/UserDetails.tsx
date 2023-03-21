@@ -32,7 +32,6 @@ const UserDetails: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
 
-
   useEffect(() => {
     async function fetchUser() {
       const currentUser = await getCurrentUser();
@@ -89,8 +88,6 @@ const UserDetails: React.FC = () => {
     setCurrentPassword(''); // Clear the current password state after updating
   };
 
-
-
   return (
     <IonPage className="user-details-page">
       <IonHeader>
@@ -106,7 +103,6 @@ const UserDetails: React.FC = () => {
               <IonList className="content">
                 {user && !editMode ? (
                   <>
-                    
                     <IonItem className="user-item">
                       <IonLabel>
                         <strong>First Name:</strong> {user.firstName}
@@ -135,7 +131,6 @@ const UserDetails: React.FC = () => {
                         <strong>Phone Number:</strong> {user.phoneNumber}
                       </IonLabel>
                     </IonItem>
-                    
                     <IonButton onClick={handleEditClick}>Edit</IonButton>
                   </>
                 ) : (

@@ -43,6 +43,7 @@ This will start the development server at `http://localhost:3000`.
 
 <br>
 <br>
+
 ## Usage
 
 To use the AltitudeCinematix app, simply log in with your Firebase authentication credentials and browse the available videos.
