@@ -130,7 +130,15 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 	try {
 		const videoId = uuidv4();
 		const storageRef = firebase.storage().ref(`videos/${videoId}/${file.name}`);
-		const uploadTask = storageRef.put(file);
+
+		const metadata = {
+			contentType: file.type,
+			customMetadata: {
+				userId: user.uid,
+			},
+		};
+
+		const uploadTask = storageRef.put(file, metadata);
 
 		uploadTask.on(
 			"state_changed",
@@ -148,6 +156,7 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 				const videoData = {
 					title,
 					url: downloadURL,
+					fileName: file.name,
 					userId: user.uid,
 				};
 
@@ -170,12 +179,26 @@ export async function getUserVideos(userId: string): Promise<any[]> {
 		const snapshot = await userVideosRef.once("value");
 		const videos: any[] = [];
 		snapshot.forEach((childSnapshot) => {
-			videos.push({ ...childSnapshot.val(), id: childSnapshot.key });
+			videos.push({ ...childSnapshot.val(), id: childSnapshot.key, fileName: childSnapshot.val().fileName });
 		});
 
 		return videos;
 	} catch (error) {
 		console.error("Error fetching user videos:", error);
 		return [];
+	}
+}
+
+export async function deleteVideo(videoId: string, userId: string, fileName: string): Promise<void> {
+	try {
+		// Remove the video from the storage bucket
+		const storageRef = firebase.storage().ref(`videos/${videoId}/${fileName}`);
+		await storageRef.delete();
+
+		// Remove the video from the database
+		await firebase.database().ref(`videos/${videoId}`).remove();
+	} catch (error) {
+		console.error("Error deleting video:", error);
+		throw error;
 	}
 }
