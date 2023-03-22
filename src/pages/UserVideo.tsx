@@ -3,13 +3,21 @@ import { IonContent, IonHeader, IonPage } from "@ionic/react";
 import Toolbar from "../components/Toolbar";
 import VideoVisualizer from "../components/VideoVisualizer";
 import "./UserVideo.css";
+import { getCurrentUser, getUserVideos } from "../firebaseConfig";
 
 const UserVideo = () => {
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<any[]>([]);
 
   useEffect(() => {
-    // Fetch user videos here and set the state
-    // Example: setVideos(fetchUserVideos());
+    const fetchUserVideos = async () => {
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        const userVideos = await getUserVideos(currentUser.uid);
+        setVideos(userVideos);
+      }
+    };
+
+    fetchUserVideos();
   }, []);
 
   return (
