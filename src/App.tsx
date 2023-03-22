@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import User from "./pages/UserDetails";
 import Upload from "./pages/Upload";
-import MyVideos from "./pages/MyVideos";
+import MyVideos from "./pages/UserVideo";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";

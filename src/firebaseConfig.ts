@@ -146,7 +146,6 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 				const downloadURL = await storageRef.getDownloadURL();
 
 				const videoData = {
-					id: videoId,
 					title,
 					url: downloadURL,
 					userId: user.uid,
