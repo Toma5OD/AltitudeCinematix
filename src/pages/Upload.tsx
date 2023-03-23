@@ -1,21 +1,42 @@
-import { IonContent, IonHeader, IonPage } from "@ionic/react";
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonToast
+} from "@ionic/react";
 import VideoUpload from "../components/VideoUpload";
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "../toast";
 import Toolbar from "../components/Toolbar";
 import "./Upload.css";
 
 const Upload = () => {
+  const [uploadComplete, setUploadComplete] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const handleUploadComplete = (status: boolean) => {
+    setUploadComplete(status);
+    if (status) {
+      setShowToast(true);
+    }
+  };
+
+  const closeToast = () => {
+    setShowToast(false);
+    setUploadComplete(false);
+  };
+
   return (
     <IonPage>
       <IonHeader>
-        <Toolbar title='Upload' />
+        <Toolbar title="Upload" />
       </IonHeader>
       <div className="upload-page">
         <div className="video-upload">
           <h2 className="video-upload-title">Upload your video</h2>
           <IonContent>
             <div className="video-upload-wrapper">
-              <VideoUpload />
+              <VideoUpload onUploadComplete={handleUploadComplete} />
             </div>
             <div className="video-upload-instructions">
               <h3 className="h3-title">Instructions</h3>

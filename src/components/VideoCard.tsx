@@ -51,7 +51,9 @@ const VideoCard: React.FC = () => {
                 <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
                   {video.title}
                 </IonRouterLink>
-                <p className="video-author">By: {video.userData.firstName} {video.userData.lastName}</p>
+                <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
+                  {video.userData.firstName} {video.userData.lastName}
+                </IonRouterLink>
               </div>
             </div>
           </SwiperSlide>

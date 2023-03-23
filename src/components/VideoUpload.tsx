@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { getCurrentUser, uploadVideo } from "../firebaseConfig";
 import firebase from "firebase/app";
-import './VideoUpload.css';
+import "./VideoUpload.css";
+import { toast } from "../toast";
 
-const VideoUpload = () => {
+interface VideoUploadProps {
+  onUploadComplete: (status: boolean) => void;
+}
+
+const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState<firebase.User | null>(null);
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>("");
+  const [uploadComplete, setUploadComplete] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -19,6 +25,12 @@ const VideoUpload = () => {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    if (onUploadComplete) {
+      onUploadComplete(uploadComplete);
+    }
+  }, [uploadComplete, onUploadComplete]);
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -38,17 +50,28 @@ const VideoUpload = () => {
         const user = await getCurrentUser();
         if (user) {
           await uploadVideo(file, title, user, (progress) => setProgress(progress));
-          setToastMessage("Video uploaded successfully");
+          toast("Video uploaded successfully"); // Update this line
+          setUploadComplete(true);
         } else {
-          setToastMessage("User not found");
+          toast("User not found"); // Update this line
         }
       } catch (error) {
-        setToastMessage("Failed to upload video");
+        toast("Failed to upload video"); // Update this line
       }
     } else {
-      setToastMessage("Please select a file and provide a title");
+      toast("Please select a file and provide a title"); // Update this line
     }
-  };
+  };  
+
+  useEffect(() => {
+    if (uploadComplete) {
+      // Reset the states
+      setFile(null);
+      setFileName(null);
+      setTitle("");
+      setProgress(0);
+    }
+  }, [uploadComplete]);
 
   return (
     <div className="video-upload-container">

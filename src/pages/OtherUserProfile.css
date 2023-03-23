@@ -1,0 +1,48 @@
+.user-video-container {
+    display: flex;
+    flex-wrap: wrap;
+    height: 92.5vh;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: rgb(0, 0, 0);
+  }
+  
+  .uv-background{
+    background-color: rgb(0, 0, 0);
+  }
+  
+  .title-uv {
+    justify-content: left;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .email-uv {
+    justify-content: left;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .user-info {
+    border-radius: 10px;
+    padding-top: 60px;
+    padding-right: 20px;
+    padding-bottom: 70px;
+    padding-left: 40px;
+    justify-content: left;
+    word-spacing: 3%;
+    height: 90.5vh;
+    padding: 1rem;
+    background-color: rgb(255, 255, 255);
+  }
+  
+  .user-video-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    height:min-content;
+    gap: 1rem;
+    padding: 1rem;
+  }

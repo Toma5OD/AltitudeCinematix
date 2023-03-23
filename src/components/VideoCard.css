@@ -65,9 +65,9 @@ slide-content {
 }
 
 .video-author {
-  padding-top: 5%;
   margin: 0;
   font-size: 1.2rem;
+  color: rgb(0, 0, 0);
 }
 
 .video-player {

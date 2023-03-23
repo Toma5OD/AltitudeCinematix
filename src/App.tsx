@@ -9,7 +9,7 @@ import User from "./pages/UserDetails";
 import Upload from "./pages/Upload";
 import MyVideos from "./pages/UserVideo";
 import SingleVideo from './pages/SingleVideo';
-
+import OtherUserProfile from "./pages/OtherUserProfile";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -52,6 +52,7 @@ const RoutingSystem: React.FC = () => {
 					<PrivateRoute path="/upload" component={Upload} exact />
 					<PrivateRoute path="/myvideos" component={MyVideos} exact />
 					<PrivateRoute path="/single-video/:videoId" component={SingleVideo} exact />
+					<PrivateRoute path="/other-user-profile/:userId" component={OtherUserProfile} />
 				</IonRouterOutlet>
 			</IonReactRouter>
 		</IonApp>
