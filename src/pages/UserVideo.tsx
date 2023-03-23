@@ -9,13 +9,18 @@ import firebase from "firebase/app";
 const UserVideo = () => {
   const [videos, setVideos] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
+  const [bio, setBio] = useState<string>('');
+  const [userType, setUserType] = useState<string>('');
+
 
   useEffect(() => {
     const fetchUserVideos = async () => {
       const currentUser = await getCurrentUser();
       if (currentUser) {
         const userData = await readUserData(currentUser.uid);
-        setUser(userData);
+        setUser({
+          ...userData,
+        });
 
         const userVideosRef = firebase.database().ref("videos").orderByChild("userId").equalTo(currentUser.uid);
         const onValueChange = userVideosRef.on("value", (snapshot) => {
@@ -59,7 +64,6 @@ const UserVideo = () => {
               <IonCol size="3">
                 <div className="user-info">
                   <h2 className="title-uv">{user.firstName} {user.lastName}</h2>
-                  <p className="email-uv">Email: {user.email}</p>
                 </div>
               </IonCol>
               <IonCol size="9">

@@ -224,17 +224,45 @@ export async function getLatestVideos(limit: number): Promise<any[]> {
 
 export async function getVideoById(videoId: string): Promise<any | null> {
 	try {
-	  const videoRef = firebase.database().ref(`videos/${videoId}`);
-	  const snapshot = await videoRef.once('value');
-	  if (snapshot.exists()) {
-		const videoData = snapshot.val();
-		return { ...videoData, id: snapshot.key };
-	  } else {
-		throw new Error('Video not found');
-	  }
+		const videoRef = firebase.database().ref(`videos/${videoId}`);
+		const snapshot = await videoRef.once('value');
+		if (snapshot.exists()) {
+			const videoData = snapshot.val();
+			return { ...videoData, id: snapshot.key };
+		} else {
+			throw new Error('Video not found');
+		}
 	} catch (error) {
-	  console.error('Error fetching video: ', error);
-	  return null;
+		console.error('Error fetching video: ', error);
+		return null;
 	}
-  }
-  
+}
+
+export async function loginWithGoogle() {
+	const provider = new firebase.auth.GoogleAuthProvider();
+	try {
+		const result = await firebase.auth().signInWithPopup(provider);
+		return result;
+	} catch (error) {
+		console.error("Error logging in with Google:", error);
+		return null;
+	}
+}
+
+export async function addUserToDatabase(user: firebase.User) {
+	const nameParts = user.displayName?.split(" ") || [];
+
+	const userData = {
+		firstName: nameParts.shift() || "", 
+		lastName: nameParts.join(" ") || "",
+		phoneNumber: user.phoneNumber || "", 
+		photoURL: user.photoURL || "",
+	};
+
+	try {
+		await firebase.database().ref(`users/${user.uid}`).set(userData);
+	} catch (error) {
+		console.error("Error adding user to database:", error);
+	}
+}
+

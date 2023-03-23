@@ -8,7 +8,11 @@ import { IonRouterLink } from '@ionic/react';
 
 SwiperCore.use([Navigation, Autoplay]);
 
-const VideoCard: React.FC = () => {
+interface VideoCardProps {
+  refreshKey: number;
+}
+
+const VideoCard: React.FC<VideoCardProps> = ({ refreshKey }) => {
   const [videos, setVideos] = useState<any[]>([]);
 
   useEffect(() => {
@@ -22,7 +26,7 @@ const VideoCard: React.FC = () => {
       );
       setVideos(videosWithUserData);
     })();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="video-card-feed">

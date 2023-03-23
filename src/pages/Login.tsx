@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { loginUser } from "../firebaseConfig";
+import { loginUser, loginWithGoogle, addUserToDatabase } from "../firebaseConfig";
 import { toast } from "../toast";
 import { setUserState } from "../redux/actions";
 import { useDispatch } from "react-redux";
@@ -28,16 +28,31 @@ const Login: React.FC = () => {
 		setBusy(true);
 		const res: any = await loginUser(username, password);
 		if (res && res.user) { // check that res is not null and that res.user is not null
+			console.log("login res", res);
+			dispatch(setUserState(res.user.email));
+			history.push("/dashboard");
+			toast("You have logged in");
+		} else {
+			console.error("User not found.");
+		}
+		setBusy(false);
+	}
+
+	async function loginWithGoogleAccount() {
+		setBusy(true);
+		const res: any = await loginWithGoogle();
+		if (res && res.user) {
 		  console.log("login res", res);
+		  await addUserToDatabase(res.user); // Add the user to the database
 		  dispatch(setUserState(res.user.email));
 		  history.push("/dashboard");
-		  toast("You have logged in");
+		  toast("You have logged in with Google");
 		} else {
 		  console.error("User not found.");
 		}
 		setBusy(false);
 	  }	  
-	  
+
 
 	return (
 		<IonPage>
@@ -68,6 +83,9 @@ const Login: React.FC = () => {
 									<div>
 										<IonButton className="login-button" onClick={login} expand="block">Login</IonButton>
 									</div>
+									<IonButton className="login-button" onClick={loginWithGoogleAccount} expand="block" color="danger">
+										Login with Google
+									</IonButton>
 									<p className="register-link">
 										New here? <Link to="/register">Register</Link>
 									</p>

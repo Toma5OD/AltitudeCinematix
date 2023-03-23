@@ -60,7 +60,6 @@ const OtherUserProfile = () => {
                         <IonCol size="3">
                             <div className="user-info">
                                 <h2 className="title-uv">{user.firstName} {user.lastName}</h2>
-                                <p className="email-uv">Email: {user.email}</p>
                             </div>
                         </IonCol>
                         <IonCol size="9">
