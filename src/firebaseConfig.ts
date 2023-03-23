@@ -158,6 +158,7 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 					url: downloadURL,
 					fileName: file.name,
 					userId: user.uid,
+					timestamp: firebase.database.ServerValue.TIMESTAMP,
 				};
 
 				await firebase.database().ref(`videos/${videoId}`).set(videoData);
@@ -202,3 +203,38 @@ export async function deleteVideo(videoId: string, userId: string, fileName: str
 		throw error;
 	}
 }
+
+export async function getLatestVideos(limit: number): Promise<any[]> {
+	try {
+		const latestVideosRef = firebase.database().ref("videos").orderByChild("timestamp").limitToLast(limit);
+		const snapshot = await latestVideosRef.once("value");
+		const videos: any[] = [];
+		snapshot.forEach((childSnapshot) => {
+			videos.push({ ...childSnapshot.val(), id: childSnapshot.key });
+		});
+
+		videos.reverse();
+
+		return videos;
+	} catch (error) {
+		console.error("Error fetching latest videos:", error);
+		return [];
+	}
+}
+
+export async function getVideoById(videoId: string): Promise<any | null> {
+	try {
+	  const videoRef = firebase.database().ref(`videos/${videoId}`);
+	  const snapshot = await videoRef.once('value');
+	  if (snapshot.exists()) {
+		const videoData = snapshot.val();
+		return { ...videoData, id: snapshot.key };
+	  } else {
+		throw new Error('Video not found');
+	  }
+	} catch (error) {
+	  console.error('Error fetching video: ', error);
+	  return null;
+	}
+  }
+  

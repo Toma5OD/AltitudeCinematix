@@ -39,3 +39,39 @@ slide-content {
   width: '100vw';
   display: 'flex';
 }
+
+.swiper1 {
+  position: relative;
+  width: 100vw;
+  height: 92.5vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: none;
+}
+
+.video-info {
+  position: absolute;
+  bottom: 8%;
+  left: 3%;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.video-title {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+.video-author {
+  padding-top: 5%;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.video-player {
+  width: 100vw;
+  height: 92.5vh;
+  object-fit: cover;
+}

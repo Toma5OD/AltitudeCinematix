@@ -1,21 +1,28 @@
-import React, { useState } from "react";
-import SwiperCore, { Navigation, Autoplay } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useState, useEffect } from "react";
+import SwiperCore, { Navigation, Autoplay } from "swiper";
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { Swiper, SwiperSlide } from "swiper/react";
 import "./VideoCard.css";
+import { getLatestVideos, readUserData } from "../firebaseConfig";
+import { IonRouterLink } from '@ionic/react';
 
 SwiperCore.use([Navigation, Autoplay]);
 
 const VideoCard: React.FC = () => {
-  const [videos] = useState<string[]>([
-    "https://www.youtube.com/embed/RNKWoqDlbxc",
-    "https://www.youtube.com/embed/NSHUiZp2aaY",
-    "https://www.youtube.com/embed/lM02vNMRRB0",
-    "https://www.youtube.com/embed/hWagaTjEa3Y",
-    "https://www.youtube.com/embed/b7Cl7S0pLRw", // 8 HOUR DRONE FILM: "Islands From Above" 4K + Music by Nature Relaxation™ (Ambient AppleTV Style)
-    "https://www.youtube.com/embed/nXIc2-8-_y0", // Desert 4K Drone Nature Videos | Film UHD
-    "https://www.youtube.com/embed/3ldqFSVOxIU", // Top 10 Places To Visit In Switzerland
-    "https://www.youtube.com/embed/XRIndzl5T3U", // Flying over Enchanted Forest 4K - Aerial Drone Film w/ Celtic Music
-  ]);
+  const [videos, setVideos] = useState<any[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const latestVideos = await getLatestVideos(10); // Fetch the latest 10 videos
+      const videosWithUserData = await Promise.all(
+        latestVideos.map(async (video) => {
+          const userData = await readUserData(video.userId);
+          return { ...video, userData };
+        })
+      );
+      setVideos(videosWithUserData);
+    })();
+  }, []);
 
   return (
     <div className="video-card-feed">
@@ -25,16 +32,27 @@ const VideoCard: React.FC = () => {
         loopedSlides={videos.length}
         navigation={true}
         mousewheel={true}
-        direction={'horizontal'}
+        direction={"horizontal"}
       >
-        {videos.map((videoUrl) => (
-          <SwiperSlide key={videoUrl}>
+        {videos.map((video) => (
+          <SwiperSlide key={video.url}>
             <div className="swiper1">
-              <iframe
-                src={videoUrl}
-                title="YouTube video player"
-                allowFullScreen
-              ></iframe>
+              <video
+                src={video.url}
+                loop
+                autoPlay
+                muted
+                playsInline
+                controls
+                className="video-player"
+
+              />
+              <div className="video-info">
+                <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
+                  {video.title}
+                </IonRouterLink>
+                <p className="video-author">By: {video.userData.firstName} {video.userData.lastName}</p>
+              </div>
             </div>
           </SwiperSlide>
         ))}

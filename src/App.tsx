@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSpinner } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
@@ -8,6 +8,8 @@ import Register from "./pages/Register";
 import User from "./pages/UserDetails";
 import Upload from "./pages/Upload";
 import MyVideos from "./pages/UserVideo";
+import SingleVideo from './pages/SingleVideo';
+
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -49,6 +51,7 @@ const RoutingSystem: React.FC = () => {
 					<PrivateRoute path="/userProfile" component={User} exact />
 					<PrivateRoute path="/upload" component={Upload} exact />
 					<PrivateRoute path="/myvideos" component={MyVideos} exact />
+					<PrivateRoute path="/single-video/:videoId" component={SingleVideo} exact />
 				</IonRouterOutlet>
 			</IonReactRouter>
 		</IonApp>
