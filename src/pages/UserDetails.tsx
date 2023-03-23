@@ -103,6 +103,7 @@ const UserDetails: React.FC = () => {
               <IonList className="content">
                 {user && !editMode ? (
                   <>
+
                     <IonItem className="user-item">
                       <IonLabel>
                         <strong>First Name:</strong> {user.firstName}
@@ -131,6 +132,7 @@ const UserDetails: React.FC = () => {
                         <strong>Phone Number:</strong> {user.phoneNumber}
                       </IonLabel>
                     </IonItem>
+
                     <IonButton onClick={handleEditClick}>Edit</IonButton>
                   </>
                 ) : (
@@ -212,3 +214,4 @@ const UserDetails: React.FC = () => {
   );
 };
 export default UserDetails;
+

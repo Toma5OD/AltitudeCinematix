@@ -108,13 +108,17 @@ export async function reauthenticateUser(password: string) {
 	}
 }
 
-export async function updateUserData(updates: { [key: string]: any }) {
+export async function updateUserData(updates: { [key: string]: any }, userId?: string) {
 	try {
 		const currentUser = firebase.auth().currentUser;
-		if (!currentUser) {
+		if (!currentUser && !userId) {
 			throw new Error('No authenticated user found');
 		}
-		const userRef = firebase.database().ref(`users/${currentUser.uid}`);
+		const targetUserId = userId || (currentUser ? currentUser.uid : '');
+		if (!targetUserId) {
+			throw new Error('No target user ID found');
+		}
+		const userRef = firebase.database().ref(`users/${targetUserId}`);
 		await userRef.update(updates);
 		const snapshot = await userRef.once('value');
 		return snapshot.val();
@@ -123,6 +127,17 @@ export async function updateUserData(updates: { [key: string]: any }) {
 		return null;
 	}
 }
+
+export async function updateUserDataFree(uid: string, updates: { [key: string]: any }) {
+	try {
+	  const userRef = firebase.database().ref(`users/${uid}`);
+	  await userRef.update(updates);
+	  return updates;
+	} catch (error) {
+	  console.log(error);
+	  return null;
+	}
+  }  
 
 export async function uploadVideo(file: File, title: string, user: firebase.User,
 	onUploadProgress: (progress: number) => void) {
@@ -253,10 +268,12 @@ export async function addUserToDatabase(user: firebase.User) {
 	const nameParts = user.displayName?.split(" ") || [];
 
 	const userData = {
-		firstName: nameParts.shift() || "", 
+		firstName: nameParts.shift() || "",
 		lastName: nameParts.join(" ") || "",
-		phoneNumber: user.phoneNumber || "", 
+		phoneNumber: user.phoneNumber || "",
 		photoURL: user.photoURL || "",
+		bio: "", // default bio
+		userType: "amateur", // default userType
 	};
 
 	try {
@@ -265,4 +282,5 @@ export async function addUserToDatabase(user: firebase.User) {
 		console.error("Error adding user to database:", error);
 	}
 }
+
 

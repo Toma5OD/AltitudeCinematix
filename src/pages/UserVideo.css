@@ -1,18 +1,20 @@
 .user-video-container {
   display: flex;
   flex-wrap: wrap;
-  height: 92.5vh;
   gap: 1rem;
   padding: 1rem;
   background-color: rgb(0, 0, 0);
 }
 
-.uv-background{
+.uv-background {
   background-color: rgb(0, 0, 0);
+  height: 100%;
+  width: 100%;
 }
 
 .title-uv {
-  justify-content: left;
+  text-align: center;
+  align-items: center;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
@@ -20,29 +22,61 @@
 }
 
 .email-uv {
-  justify-content: left;
   font-size: 16px;
   color: #555;
 }
 
 .user-info {
+  display: flex;
+  flex-direction: column;
   border-radius: 10px;
-  padding-top: 60px;
-  padding-right: 20px;
-  padding-bottom: 70px;
-  padding-left: 40px;
-  justify-content: left;
-  word-spacing: 3%;
-  height: 90.5vh;
-  padding: 1rem;
+  padding: 50px 20px 70px 40px;
   background-color: rgb(255, 255, 255);
+}
+
+.profile-picture {
+  align-self: center;
 }
 
 .user-video-card {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  height:min-content;
   gap: 1rem;
   padding: 1rem;
+}
+
+.ion-row {
+  height: 100%;
+}
+
+.ion-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.edit-profile-modal {
+  --background: rgba(40, 40, 40, 0.95);
+  --ion-color-base: #ffffff;
+}
+
+.edit-profile-modal h2 {
+  text-align: center;
+  color: #ffffff;
+  padding: 1rem 0;
+}
+
+.edit-profile-modal ion-label {
+  color: #ffffff;
+  padding: 0.5rem 0;
+}
+
+.edit-profile-modal ion-button {
+  margin: 0.5rem;
+}
+
+.user-profile {
+  width: 100%;
+  height: 100%;
 }
