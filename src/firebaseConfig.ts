@@ -53,7 +53,7 @@ export const registerUser = async (
 			phoneNumber,
 			photoURL: defaultAvatarUrl,
 			bio: "Your bio here",
-			userType:"Enthusiast"
+			userType: "Enthusiast"
 		});
 
 		return res;
@@ -289,4 +289,17 @@ export async function addUserToDatabase(user: firebase.User) {
 	}
 }
 
+export const uploadProfilePicture = async (userId: string, file: File): Promise<string | null> => {
+	try {
+		const storageRef = firebase.storage().ref();
+		const profilePicRef = storageRef.child(`profile_pictures/${userId}`);
+		await profilePicRef.put(file);
+		const url = await profilePicRef.getDownloadURL();
+		await firebase.database().ref(`users/${userId}`).update({ photoURL: url });
+		return url;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+};
 

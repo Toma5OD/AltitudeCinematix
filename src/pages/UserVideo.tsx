@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   IonModal,
   IonButton,
@@ -13,12 +13,14 @@ import {
   IonRow,
   IonCol,
   IonAvatar,
+  IonIcon,
 } from "@ionic/react";
 import Toolbar from "../components/Toolbar";
 import VideoVisualizer from "../components/VideoVisualizer";
 import "./UserVideo.css";
-import { getCurrentUser, getUserVideos, readUserData, updateUserDataFree } from "../firebaseConfig";
+import { getCurrentUser, getUserVideos, readUserData, updateUserDataFree, uploadProfilePicture } from "../firebaseConfig";
 import firebase from "firebase/app";
+import { create } from "ionicons/icons";
 
 const UserVideo = () => {
   const [videos, setVideos] = useState<any[]>([]);
@@ -26,6 +28,8 @@ const UserVideo = () => {
   const [showModal, setShowModal] = useState(false);
   const bioRef = useRef<HTMLIonTextareaElement>(null);
   const userTypeRef = useRef<HTMLIonSelectElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchUserVideos = async () => {
@@ -77,6 +81,22 @@ const UserVideo = () => {
     setShowModal(false);
   };
 
+  const handleFileChange = useCallback(async () => {
+    const input = fileInputRef.current;
+    if (input && input.files && input.files[0]) {
+      const file = input.files[0];
+      setSelectedFile(file);
+      if (user) {
+        const url = await uploadProfilePicture(user.uid, file);
+        if (url) {
+          setUser({ ...user, photoURL: url });
+        }
+      }
+    }
+  }, [user]);
+
+
+
 
 
   if (!user) {
@@ -97,7 +117,22 @@ const UserVideo = () => {
                   <div className="user-info">
                     <IonAvatar className="profile-picture">
                       <img className="user-profile" src={user.photoURL} alt="Profile" />
+                      <br />
+                      <br />
+                      <label className="upload-button">
+                        <IonIcon icon={create} />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          ref={fileInputRef}
+                          className="input-file"
+                          onChange={handleFileChange}
+                        />
+                      </label>
                     </IonAvatar>
+                    <br />
+                    <br />
+                    <br />
                     <h2 className="title-uv">
                       {user.firstName} {user.lastName}
                     </h2>

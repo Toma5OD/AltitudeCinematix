@@ -58,6 +58,7 @@ const OtherUserProfile = () => {
                     <IonGrid>
                         <IonRow>
                             <IonCol size="3">
+                                <div className="pad">
                                     <div className="user-info--other">
                                         <IonAvatar className="profile-picture--other">
                                             <img className="user-profile--other" src={user.photoURL} alt="Profile" />
@@ -66,6 +67,7 @@ const OtherUserProfile = () => {
                                         <p className="user-bio--other">{user.bio}</p>
                                         <p className="user-type--other">User type: {user.userType}</p>
                                     </div>
+                                </div>
                             </IonCol>
                             <IonCol size="9">
                                 <div className="user-video-container--other">
