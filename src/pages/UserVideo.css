@@ -1,15 +1,38 @@
+
+.page-below1{
+  height: 92.5vh;
+  width: 100vw;
+}
+
+ion-grid{
+  margin: 0px;
+  padding: 0px;
+}
+
+.page-inside{
+  height: 92.5vh;
+  width: 100vw;
+}
+
 .user-video-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1rem;
+  height: 100%;
   background-color: rgb(0, 0, 0);
+}
+
+.user-video-content {
+  height: 92.5vh;
+}
+
+.user-video-content1 {
+  height: 92.5vh;
 }
 
 .uv-background {
   background-color: rgb(0, 0, 0);
-  height: 100%;
-  width: 100%;
+  height: 100%; /* Change this line */
+  width: 100vw;
 }
 
 .title-uv {
@@ -30,6 +53,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 10px;
+  margin: 50px;
   padding: 50px 20px 70px 40px;
   background-color: rgb(255, 255, 255);
 }
@@ -44,16 +68,6 @@
   justify-content: flex-start;
   gap: 1rem;
   padding: 1rem;
-}
-
-.ion-row {
-  height: 100%;
-}
-
-.ion-col {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 }
 
 .edit-profile-modal {
@@ -76,7 +90,3 @@
   margin: 0.5rem;
 }
 
-.user-profile {
-  width: 100%;
-  height: 100%;
-}

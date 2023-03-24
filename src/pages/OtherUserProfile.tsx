@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IonContent, IonHeader, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonGrid, IonRow, IonCol, IonAvatar } from "@ionic/react";
 import Toolbar from "../components/Toolbar";
 import VideoVisualizerReadOnly from "../components/VideoVisualizerReadOnly";
 import "./OtherUserProfile.css";
@@ -37,7 +37,6 @@ const OtherUserProfile = () => {
             }
         };
 
-
         fetchUserVideos();
     }, [userId]);
 
@@ -55,24 +54,31 @@ const OtherUserProfile = () => {
                 <Toolbar title={`${user.firstName} ${user.lastName}'s Videos`} />
             </IonHeader>
             <IonContent>
-                <IonGrid>
-                    <IonRow>
-                        <IonCol size="3">
-                            <div className="user-info">
-                                <h2 className="title-uv">{user.firstName} {user.lastName}</h2>
-                            </div>
-                        </IonCol>
-                        <IonCol size="9">
-                            <div className="user-video-container">
-                                <div className="user-video-card">
-                                    {videos.map((video, index) => (
-                                        <VideoVisualizerReadOnly key={index} video={video} />
-                                    ))}
+                <div className="page-inside">
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol size="3">
+                                    <div className="user-info--other">
+                                        <IonAvatar className="profile-picture--other">
+                                            <img className="user-profile--other" src={user.photoURL} alt="Profile" />
+                                        </IonAvatar>
+                                        <h2 className="title-uv--other">{user.firstName} {user.lastName}</h2>
+                                        <p className="user-bio--other">{user.bio}</p>
+                                        <p className="user-type--other">User type: {user.userType}</p>
+                                    </div>
+                            </IonCol>
+                            <IonCol size="9">
+                                <div className="user-video-container--other">
+                                    <div className="user-video-card--other">
+                                        {videos.map((video, index) => (
+                                            <VideoVisualizerReadOnly key={index} video={video} />
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
+                </div>
             </IonContent>
         </IonPage>
     );

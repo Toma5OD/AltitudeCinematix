@@ -84,58 +84,61 @@ const UserVideo = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className="my-ion-page">
       <IonHeader>
         <Toolbar title="My Videos" />
       </IonHeader>
-      <IonContent>
-        <IonGrid>
-          <div className="uv-background">
-            <IonRow>
-              <IonCol size="3">
-                <div className="user-info">
-                <IonAvatar className="profile-picture">
-                  <img className="user-profile" src={user.photoURL} alt="Profile" />
-                </IonAvatar>
-                  <h2 className="title-uv">
-                    {user.firstName} {user.lastName}
-                  </h2>
-                  <p className="user-bio">{user.bio}</p>
-                  <p className="user-type">{user.userType}</p>
-                  <IonButton onClick={() => setShowModal(true)} expand="block">
-                    Edit Profile
-                  </IonButton>
-                  <IonModal isOpen={showModal} cssClass="edit-profile-modal">
-                    <IonContent>
-                      <h2>Edit Profile</h2>
-                      <IonLabel>Bio</IonLabel>
-                      <IonTextarea ref={bioRef} value={user.bio}></IonTextarea>
-                      <IonLabel>User Type</IonLabel>
-                      <IonSelect ref={userTypeRef} value={user.userType}>
-                        <IonSelectOption value="Amateur Drone Pilot">Amateur Drone Pilot</IonSelectOption>
-                        <IonSelectOption value="Professional Drone Pilot">Professional Drone Pilot</IonSelectOption>
-                        <IonSelectOption value="Amateur Videographer">Amateur Videographer</IonSelectOption>
-                        <IonSelectOption value="Professional Videographer">Professional Videographer</IonSelectOption>
-                      </IonSelect>
-                      <IonButton onClick={saveProfile}>Save</IonButton>
-                      <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
-                    </IonContent>
-                  </IonModal>
-                </div>
-              </IonCol>
-              <IonCol size="9">
-                <div className="user-video-container">
-                  <div className="user-video-card">
-                    {videos.map((video, index) => (
-                      <VideoVisualizer key={index} video={video} refresh={refresh} />
-                    ))}
+      <div className="page-below1">
+        <IonContent>
+          <IonGrid className="user-video-content">
+            <div className="uv-background">
+              <IonRow>
+                <IonCol size="3">
+                  <div className="user-info">
+                    <IonAvatar className="profile-picture">
+                      <img className="user-profile" src={user.photoURL} alt="Profile" />
+                    </IonAvatar>
+                    <h2 className="title-uv">
+                      {user.firstName} {user.lastName}
+                    </h2>
+                    <p className="user-bio">{user.bio}</p>
+                    <p className="user-type">User type: {user.userType}</p>
+                    <IonButton onClick={() => setShowModal(true)} expand="block">
+                      Edit Profile
+                    </IonButton>
+                    <IonModal isOpen={showModal} cssClass="edit-profile-modal">
+                      <IonContent>
+                        <h2>Edit Profile</h2>
+                        <IonLabel>Bio</IonLabel>
+                        <IonTextarea ref={bioRef} value={user.bio}></IonTextarea>
+                        <IonLabel>User Type</IonLabel>
+                        <IonSelect ref={userTypeRef} value={user.userType}>
+                          <IonSelectOption value="Amateur Drone Pilot">Amateur Drone Pilot</IonSelectOption>
+                          <IonSelectOption value="Professional Drone Pilot">Professional Drone Pilot</IonSelectOption>
+                          <IonSelectOption value="Amateur Videographer">Amateur Videographer</IonSelectOption>
+                          <IonSelectOption value="Professional Videographer">Professional Videographer</IonSelectOption>
+                          <IonSelectOption value="Enthusiast">Enthusiast</IonSelectOption>
+                        </IonSelect>
+                        <IonButton onClick={saveProfile}>Save</IonButton>
+                        <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
+                      </IonContent>
+                    </IonModal>
                   </div>
-                </div>
-              </IonCol>
-            </IonRow>
-          </div>
-        </IonGrid>
-      </IonContent>
+                </IonCol>
+                <IonCol size="9">
+                  <div className="user-video-container">
+                    <div className="user-video-card">
+                      {videos.map((video, index) => (
+                        <VideoVisualizer key={index} video={video} refresh={refresh} />
+                      ))}
+                    </div>
+                  </div>
+                </IonCol>
+              </IonRow>
+            </div>
+          </IonGrid>
+        </IonContent>
+      </div>
     </IonPage>
   );
 };

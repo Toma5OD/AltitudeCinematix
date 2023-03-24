@@ -45,11 +45,17 @@ export const registerUser = async (
 ) => {
 	try {
 		const res = await firebase.auth().createUserWithEmailAndPassword(username, password);
+		const defaultAvatarUrl = "https://ionicframework.com/docs/img/demos/avatar.svg";
+
 		await firebase.database().ref(`users/${res.user?.uid}`).set({
 			firstName,
 			lastName,
 			phoneNumber,
+			photoURL: defaultAvatarUrl,
+			bio: "Your bio here",
+			userType:"Enthusiast"
 		});
+
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -130,14 +136,14 @@ export async function updateUserData(updates: { [key: string]: any }, userId?: s
 
 export async function updateUserDataFree(uid: string, updates: { [key: string]: any }) {
 	try {
-	  const userRef = firebase.database().ref(`users/${uid}`);
-	  await userRef.update(updates);
-	  return updates;
+		const userRef = firebase.database().ref(`users/${uid}`);
+		await userRef.update(updates);
+		return updates;
 	} catch (error) {
-	  console.log(error);
-	  return null;
+		console.log(error);
+		return null;
 	}
-  }  
+}
 
 export async function uploadVideo(file: File, title: string, user: firebase.User,
 	onUploadProgress: (progress: number) => void) {
