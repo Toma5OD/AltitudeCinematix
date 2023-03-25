@@ -3,6 +3,7 @@ import 'firebase/database';
 import { v4 as uuidv4 } from "uuid";
 import firebase from "firebase/app";
 import config from "./firebaseCredentials";
+// import { processVideo } from "../functions/src/index";
 
 firebase.initializeApp(config);
 
@@ -173,6 +174,20 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 			},
 			async () => {
 				const downloadURL = await storageRef.getDownloadURL();
+
+				try {
+					const response = await firebase.functions().httpsCallable("processVideo")({
+						videoPath: downloadURL,
+					});
+
+					if (response.data.success) {
+						console.log("Video processed successfully");
+					} else {
+						console.log("Video processing failed:", response.data.message);
+					}
+				} catch (error) {
+					console.log("Error calling processVideo function:", error);
+				}
 
 				const videoData = {
 					title,

@@ -141,7 +141,7 @@ const UserVideo = () => {
                     <IonButton onClick={() => setShowModal(true)} expand="block">
                       Edit Profile
                     </IonButton>
-                    <IonModal isOpen={showModal} cssClass="edit-profile-modal">
+                    <IonModal isOpen={showModal} className="edit-profile-modal">
                       <IonContent>
                         <h2>Edit Profile</h2>
                         <IonLabel>Bio</IonLabel>

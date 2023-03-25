@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSpinner } from "@ionic/react";
+import { setupIonicReact, IonApp, IonRouterOutlet, IonSpinner } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -79,5 +79,8 @@ const App: React.FC = () => {
 
 	return <IonApp>{busy ? <IonSpinner /> : <RoutingSystem />}</IonApp>;
 };
+setupIonicReact({
+	mode: 'md'
+});
 
 export default App;
