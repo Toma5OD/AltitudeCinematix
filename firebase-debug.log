@@ -1,0 +1,110 @@
+[debug] [2023-03-25T23:19:12.737Z] ----------------------------------------------------------------------
+[debug] [2023-03-25T23:19:12.739Z] Command:       /usr/local/bin/firebase /Users/tomasodalaigh/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase deploy --only functions --debug
+[debug] [2023-03-25T23:19:12.739Z] CLI Version:   11.25.1
+[debug] [2023-03-25T23:19:12.739Z] Platform:      darwin
+[debug] [2023-03-25T23:19:12.739Z] Node Version:  v16.16.0
+[debug] [2023-03-25T23:19:12.745Z] Time:          Sat Mar 25 2023 23:19:12 GMT+0000 (Greenwich Mean Time)
+[debug] [2023-03-25T23:19:12.746Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-25T23:19:12.860Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-25T23:19:12.861Z] > authorizing via signed-in user (tom1996.18@gmail.com)
+[debug] [2023-03-25T23:19:12.862Z] [iam] checking project altitudecinematix for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2023-03-25T23:19:12.865Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/altitudecinematix:testIamPermissions [none]
+[debug] [2023-03-25T23:19:12.866Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/altitudecinematix:testIamPermissions x-goog-quota-user=projects/altitudecinematix
+[debug] [2023-03-25T23:19:12.866Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/altitudecinematix:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2023-03-25T23:19:13.139Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/altitudecinematix:testIamPermissions 200
+[debug] [2023-03-25T23:19:13.143Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/altitudecinematix:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2023-03-25T23:19:13.144Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/altitudecinematix/serviceAccounts/altitudecinematix@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2023-03-25T23:19:13.147Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/altitudecinematix/serviceAccounts/altitudecinematix@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2023-03-25T23:19:13.353Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/altitudecinematix/serviceAccounts/altitudecinematix@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2023-03-25T23:19:13.357Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/altitudecinematix/serviceAccounts/altitudecinematix@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'altitudecinematix'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2023-03-25T23:19:18.697Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/altitudecinematix [none]
+[debug] [2023-03-25T23:19:19.031Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/altitudecinematix 200
+[debug] [2023-03-25T23:19:19.031Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/altitudecinematix {"projectId":"altitudecinematix","projectNumber":"149776768071","displayName":"AltitudeCinematix","name":"projects/altitudecinematix","resources":{"hostingSite":"altitudecinematix","realtimeDatabaseInstance":"altitudecinematix-default-rtdb","storageBucket":"altitudecinematix.appspot.com","locationId":"europe-west"},"state":"ACTIVE","etag":"1_fd9e5d2c-e84f-4e9d-b9c5-57640b94e5b8"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2023-03-25T23:19:19.035Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudfunctions.googleapis.com [none]
+[debug] [2023-03-25T23:19:19.035Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/altitudecinematix
+[debug] [2023-03-25T23:19:19.039Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/runtimeconfig.googleapis.com [none]
+[debug] [2023-03-25T23:19:19.040Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/altitudecinematix
+[debug] [2023-03-25T23:19:19.042Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudbuild.googleapis.com [none]
+[debug] [2023-03-25T23:19:19.043Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudbuild.googleapis.com x-goog-quota-user=projects/altitudecinematix
+[debug] [2023-03-25T23:19:19.046Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/artifactregistry.googleapis.com [none]
+[debug] [2023-03-25T23:19:19.046Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/artifactregistry.googleapis.com x-goog-quota-user=projects/altitudecinematix
+[debug] [2023-03-25T23:19:19.458Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/artifactregistry.googleapis.com 200
+[debug] [2023-03-25T23:19:19.460Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/artifactregistry.googleapis.com [omitted]
+[info] ✔  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2023-03-25T23:19:19.982Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/runtimeconfig.googleapis.com 200
+[debug] [2023-03-25T23:19:19.983Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2023-03-25T23:19:19.986Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudfunctions.googleapis.com 200
+[debug] [2023-03-25T23:19:19.987Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudfunctions.googleapis.com [omitted]
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2023-03-25T23:19:19.992Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudbuild.googleapis.com 200
+[debug] [2023-03-25T23:19:19.993Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/altitudecinematix/services/cloudbuild.googleapis.com [omitted]
+[info] ✔  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2023-03-25T23:19:19.994Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/altitudecinematix/adminSdkConfig [none]
+[debug] [2023-03-25T23:19:20.484Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/altitudecinematix/adminSdkConfig 200
+[debug] [2023-03-25T23:19:20.486Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/altitudecinematix/adminSdkConfig {"projectId":"altitudecinematix","databaseURL":"https://altitudecinematix-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"altitudecinematix.appspot.com","locationId":"europe-west"}
+[debug] [2023-03-25T23:19:20.488Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/altitudecinematix/configs [none]
+[debug] [2023-03-25T23:19:21.321Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/altitudecinematix/configs 200
+[debug] [2023-03-25T23:19:21.328Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/altitudecinematix/configs {}
+[debug] [2023-03-25T23:19:21.334Z] Validating nodejs source
+[debug] [2023-03-25T23:19:22.190Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.0.0"
+  },
+  "private": true
+}
+[debug] [2023-03-25T23:19:22.190Z] Building nodejs source
+[debug] [2023-03-25T23:19:22.192Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-03-25T23:19:22.222Z] Found firebase-functions binary at '/Users/tomasodalaigh/Desktop/GitHub/AltitudeCinematix/functions/node_modules/.bin/firebase-functions'
+[debug] [2023-03-25T23:19:22.996Z] Serving at port 8442
+
+[debug] [2023-03-25T23:19:23.332Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2023-03-25T23:19:23.347Z] shutdown requested via /__/quitquitquit
+
+[debug] [2023-03-25T23:19:23.370Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/altitudecinematix/locations/-/functions [none]
+[debug] [2023-03-25T23:19:23.959Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/altitudecinematix/locations/-/functions 200
+[debug] [2023-03-25T23:19:23.960Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/altitudecinematix/locations/-/functions {}
+[debug] [2023-03-25T23:19:23.962Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/altitudecinematix/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2023-03-25T23:19:25.085Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/altitudecinematix/locations/-/functions 200
+[debug] [2023-03-25T23:19:25.086Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/altitudecinematix/locations/-/functions {}
+[debug] [2023-03-25T23:19:25.103Z] Total Function Deployment time: 0
+[debug] [2023-03-25T23:19:25.103Z] 0 Functions Deployed
+[debug] [2023-03-25T23:19:25.103Z] 0 Functions Errored
+[debug] [2023-03-25T23:19:25.103Z] 0 Function Deployments Aborted
+[debug] [2023-03-25T23:19:25.103Z] Average Function Deployment time: NaN
+[info] i  functions: cleaning up build files... 
+[info] 
+[info] ✔  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/altitudecinematix/overview

@@ -1,9 +1,11 @@
-import * as functions from "firebase-functions";
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+const ffmpeg = require("fluent-ffmpeg");
 
-// // Start writing functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+ffmpeg.setFfmpegPath(ffmpegPath);
+
+ffmpeg("input.mp4")
+    .size("320x240")
+    .save("output.mp4")
+    .on("end", () => {
+      console.log("Conversion complete");
+    });

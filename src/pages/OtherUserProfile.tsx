@@ -5,7 +5,7 @@ import VideoVisualizerReadOnly from "../components/VideoVisualizerReadOnly";
 import "./OtherUserProfile.css";
 import { useParams } from "react-router-dom";
 import { getUserVideos, readUserData } from "../firebaseConfig";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 
 const OtherUserProfile = () => {
     const [videos, setVideos] = useState<any[]>([]);

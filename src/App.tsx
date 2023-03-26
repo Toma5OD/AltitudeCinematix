@@ -30,7 +30,6 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import { getCurrentUser } from "./firebaseConfig";
-import firebase from "firebase";
 
 import { useDispatch } from "react-redux";
 import { setUserState } from "./redux/actions";
@@ -38,7 +37,6 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from './components/PrivateRoute';
 
 const RoutingSystem: React.FC = () => {
-	const auth = firebase.auth();
 
 	return (
 		<IonApp>
@@ -69,7 +67,7 @@ const App: React.FC = () => {
 			if (user) {
 				// logged in. Dispatch action from redux store in actions.ts file
 				dispatch(setUserState(user.email));
-				console.log(firebase.auth().currentUser?.email);
+				console.log(user.email);
 			} else {
 				window.history.replaceState({}, "", "/");
 			}

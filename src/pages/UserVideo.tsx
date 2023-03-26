@@ -19,9 +19,8 @@ import Toolbar from "../components/Toolbar";
 import VideoVisualizer from "../components/VideoVisualizer";
 import "./UserVideo.css";
 import { getCurrentUser, getUserVideos, readUserData, updateUserDataFree, uploadProfilePicture } from "../firebaseConfig";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import { create } from "ionicons/icons";
-
 const UserVideo = () => {
   const [videos, setVideos] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
@@ -30,7 +29,6 @@ const UserVideo = () => {
   const userTypeRef = useRef<HTMLIonSelectElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     const fetchUserVideos = async () => {
       const currentUser = await getCurrentUser();
@@ -38,7 +36,6 @@ const UserVideo = () => {
         const userData = await readUserData(currentUser.uid);
         setUser(userData);
         setUser({ ...userData, uid: currentUser.uid });
-
         const userVideosRef = firebase.database().ref("videos").orderByChild("userId").equalTo(currentUser.uid);
         const onValueChange = userVideosRef.on("value", (snapshot) => {
           const videosData = snapshot.val();
@@ -51,27 +48,22 @@ const UserVideo = () => {
           }
           setVideos(videosList);
         });
-
         return () => {
           userVideosRef.off("value", onValueChange);
         };
       }
     };
-
     fetchUserVideos();
   }, []);
-
   const refresh = () => {
     // Add a refresh function here if needed
   };
-
   const saveProfile = async () => {
     if (user && bioRef.current && userTypeRef.current) {
       const updates = {
         bio: bioRef.current.value,
         userType: userTypeRef.current.value,
       };
-
       console.log('User UID:', user.uid);
       const updatedFields = await updateUserDataFree(user.uid, updates);
       if (updatedFields) {
@@ -80,7 +72,6 @@ const UserVideo = () => {
     }
     setShowModal(false);
   };
-
   const handleFileChange = useCallback(async () => {
     const input = fileInputRef.current;
     if (input && input.files && input.files[0]) {
@@ -94,15 +85,9 @@ const UserVideo = () => {
       }
     }
   }, [user]);
-
-
-
-
-
   if (!user) {
     return <div>Loading...</div>;
   }
-
   return (
     <IonPage className="my-ion-page">
       <IonHeader>
@@ -177,5 +162,4 @@ const UserVideo = () => {
     </IonPage>
   );
 };
-
 export default UserVideo;
