@@ -1,4 +1,5 @@
 import {
+	IonToast,
 	IonContent,
 	IonPage,
 	IonInput,
@@ -12,7 +13,6 @@ import {
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { loginUser, loginWithGoogle, addUserToDatabase } from "../firebaseConfig";
-import { toast } from "../toast";
 import { setUserState } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import "./Login.css";
@@ -23,40 +23,56 @@ const Login: React.FC = () => {
 	const dispatch = useDispatch();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [showToast, setShowToast] = useState(false);
+	const [toastMessage, setToastMessage] = useState("");
 
 	async function login() {
 		setBusy(true);
-		const res: any = await loginUser(username, password);
-		if (res && res.user) { // check that res is not null and that res.user is not null
-			console.log("login res", res);
-			dispatch(setUserState(res.user.email));
+		const user: any = await loginUser(username, password);
+		if (user) {
+			console.log("login user", user);
+			dispatch(setUserState(user.email));
 			history.push("/dashboard");
-			toast("You have logged in");
+			window.location.reload();
+			setToastMessage("You have logged in");
+			setShowToast(true);
 		} else {
-			console.error("User not found.");
+			console.error("Password or User is incorrect.");
+			setToastMessage("User not found.");
+			setShowToast(true);
 		}
 		setBusy(false);
 	}
-
+	
 	async function loginWithGoogleAccount() {
 		setBusy(true);
-		const res: any = await loginWithGoogle();
-		if (res && res.user) {
-		  console.log("login res", res);
-		  await addUserToDatabase(res.user); // Add the user to the database
-		  dispatch(setUserState(res.user.email));
-		  history.push("/dashboard");
-		  toast("You have logged in with Google");
+		const user: any = await loginWithGoogle();
+		if (user) {
+			console.log("login user", user);
+			await addUserToDatabase(user);
+			dispatch(setUserState(user.email));
+			history.push("/dashboard");
+			window.location.reload();
+			setToastMessage("You have logged in with Google");
+			setShowToast(true);
 		} else {
-		  console.error("User not found.");
+			console.error("User not found.");
+			setToastMessage("Password or User is incorrect.");
+			setShowToast(true);
 		}
 		setBusy(false);
-	  }	  
-
+	}	
 
 	return (
 		<IonPage>
 			<div className="login-background">
+				<IonToast
+					isOpen={showToast}
+					onDidDismiss={() => setShowToast(false)}
+					message={toastMessage}
+					duration={2000}
+					position="top"
+				/>
 				<IonContent className="centre-column">
 					<div className="login-box">
 						<IonText className="login-title text-center">Login</IonText>

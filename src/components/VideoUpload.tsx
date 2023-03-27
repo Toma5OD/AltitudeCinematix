@@ -1,9 +1,11 @@
+import {
+  IonToast,
+} from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { getCurrentUser, uploadVideo } from "../firebaseConfig";
-import { User } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import type { User } from "firebase/auth";
 import "./VideoUpload.css";
-import { toast } from "../toast";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 interface VideoUploadProps {
   onUploadComplete: (status: boolean) => void;
@@ -12,20 +14,23 @@ interface VideoUploadProps {
 const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState<User | null>(null);
   const [title, setTitle] = useState<string>("");
   const [uploadComplete, setUploadComplete] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
-      const currentUser = await getCurrentUser();
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
       setUser(currentUser);
     };
 
     fetchUser();
   }, []);
+
 
   useEffect(() => {
     if (onUploadComplete) {
@@ -51,16 +56,20 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
         const user = await getCurrentUser();
         if (user) {
           await uploadVideo(file, title, user, (progress) => setProgress(progress));
-          toast("Video uploaded successfully");
+          setToastMessage("Video uploaded successfully");
+          setShowToast(true);
           setUploadComplete(true);
         } else {
-          toast("User not found");
+          setToastMessage("User not found");
+          setShowToast(true);
         }
       } catch (error) {
-        toast("Failed to upload video");
+        setToastMessage("Failed to upload video");
+        setShowToast(true);
       }
     } else {
-      toast("Please select a file and provide a title");
+      setToastMessage("Please select a file and provide a title");
+      setShowToast(true);
     }
   };
 
@@ -76,6 +85,13 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
 
   return (
     <div className="video-upload-container">
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={toastMessage}
+        duration={2000}
+        position="top"
+      />
       <label htmlFor="video-upload-input" className="custom-file-input">
         <i className="fa fa-upload"></i>
         {file ? " Change file" : " Choose file"}

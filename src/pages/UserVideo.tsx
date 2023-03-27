@@ -18,7 +18,7 @@ import {
 import Toolbar from "../components/Toolbar";
 import VideoVisualizer from "../components/VideoVisualizer";
 import "./UserVideo.css";
-import { getCurrentUser, getUserVideos, readUserData, updateUserDataFree, uploadProfilePicture } from "../firebaseConfig";
+import { getCurrentUser, readUserData, updateUserDataFree, uploadProfilePicture } from "../firebaseConfig";
 import { query, onValue, orderByChild, equalTo, off, getDatabase, ref } from "firebase/database";
 import { create } from "ionicons/icons";
 
@@ -36,9 +36,8 @@ const UserVideo = () => {
       const currentUser = await getCurrentUser();
       if (currentUser) {
         const userData = await readUserData(currentUser.uid);
-        setUser(userData);
         setUser({ ...userData, uid: currentUser.uid });
-
+  
         const database = getDatabase();
         const userVideosRef = ref(database, "videos");
         const filteredUserVideosRef = query(userVideosRef, orderByChild("userId"), equalTo(currentUser.uid));
@@ -53,16 +52,16 @@ const UserVideo = () => {
           }
           setVideos(videosList);
         });
-
+  
         return () => {
           off(filteredUserVideosRef, "value", onValueChange);
         };
       }
     };
-
+  
     fetchUserVideos();
   }, []);
-
+    
   const refresh = () => {
     // Add a refresh function here if needed
   };

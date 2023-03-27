@@ -40,6 +40,7 @@ const Register: React.FC = () => {
 		if (res) {
 			console.log("registration successful");
 			history.replace("/dashboard");
+			window.location.reload();
 			toast("Registration successful");
 		}
 		setBusy(false);

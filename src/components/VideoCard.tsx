@@ -5,14 +5,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "./VideoCard.css";
 import { getLatestVideos, readUserData } from "../firebaseConfig";
 import { IonRouterLink } from '@ionic/react';
+import { useSelector } from "react-redux";
 
 SwiperCore.use([Navigation, Autoplay]);
 
-interface VideoCardProps {
-  refreshKey: number;
-}
+interface VideoCardProps { }
 
-const VideoCard: React.FC<VideoCardProps> = ({ refreshKey }) => {
+const VideoCard: React.FC<VideoCardProps> = () => {
+  const user = useSelector((state: any) => state.user);
   const [videos, setVideos] = useState<any[]>([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ refreshKey }) => {
       );
       setVideos(videosWithUserData);
     })();
-  }, [refreshKey]);
+  }, [user]);
 
   return (
     <div className="video-card-feed">
@@ -49,19 +49,23 @@ const VideoCard: React.FC<VideoCardProps> = ({ refreshKey }) => {
                 playsInline
                 controls
                 className="video-player"
-
               />
               <div className="video-info">
                 <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
                   {video.title}
                 </IonRouterLink>
-                <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
-                  {video.userData.firstName} {video.userData.lastName}
-                </IonRouterLink>
+                {video.userData ? (
+                  <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
+                    {video.userData.firstName} {video.userData.lastName}
+                  </IonRouterLink>
+                ) : (
+                  <span className="video-author">Unknown User</span>
+                )}
               </div>
             </div>
           </SwiperSlide>
         ))}
+
       </Swiper>
     </div>
   );

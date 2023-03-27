@@ -16,7 +16,6 @@ import {
 import Toolbar from '../components/Toolbar';
 
 interface User {
-  email: string;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -31,6 +30,7 @@ const UserDetails: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
+  const [uid, setUid] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchUser() {
@@ -39,7 +39,8 @@ const UserDetails: React.FC = () => {
         const userData = await readUserData(currentUser.uid);
         if (userData) {
           setUser(userData);
-          setEmail(userData.email);
+          setUid(currentUser.uid);
+          setEmail(currentUser.email || '');
           setFirstName(userData.firstName);
           setLastName(userData.lastName);
           setPhoneNumber(userData.phoneNumber);
@@ -47,19 +48,20 @@ const UserDetails: React.FC = () => {
       }
     }
     fetchUser();
-  }, []);
+  }, []);  
 
   const handleEditClick = () => {
     setEditMode(true);
   };
 
-  const handleCancelClick = () => {
+  const handleCancelClick = async () => {
     setEditMode(false);
-    setEmail(user?.email || '');
+    const currentUser = await getCurrentUser();
+    setEmail(currentUser?.email || '');
     setFirstName(user?.firstName || '');
     setLastName(user?.lastName || '');
     setPhoneNumber(user?.phoneNumber || '');
-  };
+  };  
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -74,9 +76,9 @@ const UserDetails: React.FC = () => {
     const updates = { email, firstName, lastName, phoneNumber };
     const updatedUser = await updateUserData(updates);
 
-    if (email !== user?.email) {
+    if (email !== (await getCurrentUser())?.email) {
       await updateEmail(email);
-    }
+    }    
 
     if (newPassword) {
       await updateUserPassword(newPassword);
@@ -103,7 +105,6 @@ const UserDetails: React.FC = () => {
               <IonList className="content">
                 {user && !editMode ? (
                   <>
-
                     <IonItem className="user-item">
                       <IonLabel>
                         <strong>First Name:</strong> {user.firstName}
@@ -116,7 +117,7 @@ const UserDetails: React.FC = () => {
                     </IonItem>
                     <IonItem className="user-item">
                       <IonLabel>
-                        <strong>Email:</strong> {user.email}
+                        <strong>Email:</strong> {email}
                       </IonLabel>
                     </IonItem>
                     <IonItem className="user-item">

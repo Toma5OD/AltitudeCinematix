@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
+import { serverTimestamp, limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
 import { signInWithPopup, GoogleAuthProvider, reauthenticateWithCredential, EmailAuthProvider, updateEmail as updateAuthEmail, updatePassword as updateAuthPassword, getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, User, createUserWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 // import { httpsCallable } from "firebase/functions";
@@ -12,32 +12,45 @@ export const auth = getAuth(firebaseApp);
 export const database = getDatabase(firebaseApp);
 
 export function getCurrentUser(): Promise<User | null> {
-	return new Promise((resolve) => {
-		const unsubscribe = onAuthStateChanged(auth, function (user) {
-			if (user) {
-				resolve(user);
-			} else {
-				resolve(null);
-			}
-			unsubscribe();
-		});
-	});
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, function (user) {
+      if (user) {
+        resolve(user);
+      } else {
+        resolve(null);
+      }
+      unsubscribe();
+    });
+  });
 }
 
 export function logoutUser() {
-	return signOut(auth);
+  return signOut(auth);
 }
 
-export async function loginUser(username: string, password: string) {
-	const email = `${username}`;
-	try {
-		const res = await signInWithEmailAndPassword(auth, email, password);
-		return res;
-	} catch (error) {
-		console.log(error);
-		return false;
-	}
+export async function loginUser(username: string, password: string): Promise<User | null> {
+  const email = `${username}`;
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    return res.user;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
+
+export async function loginWithGoogle(): Promise<User | null> {
+  const provider = new GoogleAuthProvider();
+  try {
+    const auth = getAuth(firebaseApp);
+    const result = await signInWithPopup(auth, provider);
+    return result.user;
+  } catch (error) {
+    console.error("Error logging in with Google:", error);
+    return null;
+  }
+}
+
 
 export const registerUser = async (
 	username: string,
@@ -68,29 +81,29 @@ export const registerUser = async (
 
 
 export async function readUserData(uid: string): Promise<any> {
-  try {
-    const db = getDatabase();
-    const userRef = ref(db, `users/${uid}`);
+	try {
+		const db = getDatabase();
+		const userRef = ref(db, `users/${uid}`);
 
-    const userData = await new Promise((resolve, reject) => {
-      const callback = (snapshot: DataSnapshot) => {
-        const data = snapshot.val();
-        off(userRef, 'value', callback);
-        resolve(data);
-      };
+		const userData = await new Promise((resolve, reject) => {
+			const callback = (snapshot: DataSnapshot) => {
+				const data = snapshot.val();
+				off(userRef, 'value', callback);
+				resolve(data);
+			};
 
-      const errorCallback = (error: Error) => {
-		reject(error);
-	  };
+			const errorCallback = (error: Error) => {
+				reject(error);
+			};
 
-      onValue(userRef, callback, errorCallback);
-    });
+			onValue(userRef, callback, errorCallback);
+		});
 
-    return userData;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+		return userData;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
 }
 
 
@@ -203,6 +216,16 @@ export async function uploadVideo(
 				throw error;
 			},
 			async () => {
+				const videoData = {
+					title,
+					url: await getDownloadURL(uploadTask.snapshot.ref),
+					fileName: file.name,
+					userId: user.uid,
+					timestamp: serverTimestamp(),
+				};
+
+				await set(videoDatabaseRef, videoData);
+
 				onValue(videoDatabaseRef, (snapshot) => {
 					if (snapshot.exists()) {
 						off(videoDatabaseRef);
@@ -295,18 +318,6 @@ export async function getVideoById(videoId: string): Promise<any | null> {
 	}
 }
 
-export async function loginWithGoogle() {
-	const provider = new GoogleAuthProvider();
-	try {
-		const auth = getAuth(firebaseApp);
-		const result = await signInWithPopup(auth, provider);
-		return result;
-	} catch (error) {
-		console.error("Error logging in with Google:", error);
-		return null;
-	}
-}
-
 export async function addUserToDatabase(user: User) {
 	const nameParts = user.displayName?.split(" ") || [];
 
@@ -320,11 +331,19 @@ export async function addUserToDatabase(user: User) {
 	};
 
 	try {
-		await set(ref(database, `users/${user.uid}`), userData);
+		const userRef = ref(database, `users/${user.uid}`);
+		const snapshot = await get(userRef);
+
+		// Check if the user exists in the database
+		if (!snapshot.exists()) {
+			// Add the user to the database only if the user does not exist
+			await set(userRef, userData);
+		}
 	} catch (error) {
 		console.error("Error adding user to database:", error);
 	}
 }
+
 
 export const uploadProfilePicture = async (userId: string, file: File): Promise<string | null> => {
 	try {

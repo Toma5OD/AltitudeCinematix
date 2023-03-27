@@ -10,6 +10,7 @@ import Upload from "./pages/Upload";
 import MyVideos from "./pages/UserVideo";
 import SingleVideo from './pages/SingleVideo';
 import OtherUserProfile from "./pages/OtherUserProfile";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -59,23 +60,25 @@ const RoutingSystem: React.FC = () => {
 
 // create React Function Component
 const App: React.FC = () => {
-	const [busy, setBusy] = useState(true);
-	const dispatch = useDispatch();
+    const [busy, setBusy] = useState(true);
+    const dispatch = useDispatch();
 
-	useEffect(() => {
-		getCurrentUser().then((user: any) => {
-			if (user) {
-				// logged in. Dispatch action from redux store in actions.ts file
-				dispatch(setUserState(user.email));
-				console.log(user.email);
-			} else {
-				window.history.replaceState({}, "", "/");
-			}
-			setBusy(false);
-		});
-	}, [dispatch]);
+    useEffect(() => {
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                dispatch(setUserState(user.email));
+                console.log(user.email);
+            } else {
+                window.history.replaceState({}, "", "/");
+            }
+            setBusy(false);
+        });
 
-	return <IonApp>{busy ? <IonSpinner /> : <RoutingSystem />}</IonApp>;
+        return () => unsubscribe();
+    }, [dispatch]);
+
+    return <IonApp>{busy ? <IonSpinner /> : <RoutingSystem />}</IonApp>;
 };
 setupIonicReact({
 	mode: 'md'
