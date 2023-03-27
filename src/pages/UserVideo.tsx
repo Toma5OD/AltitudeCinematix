@@ -19,7 +19,7 @@ import Toolbar from "../components/Toolbar";
 import VideoVisualizer from "../components/VideoVisualizer";
 import "./UserVideo.css";
 import { getCurrentUser, getUserVideos, readUserData, updateUserDataFree, uploadProfilePicture } from "../firebaseConfig";
-import firebase from "firebase/app";
+import { query, onValue, orderByChild, equalTo, off, getDatabase, ref } from "firebase/database";
 import { create } from "ionicons/icons";
 
 const UserVideo = () => {
@@ -39,8 +39,10 @@ const UserVideo = () => {
         setUser(userData);
         setUser({ ...userData, uid: currentUser.uid });
 
-        const userVideosRef = firebase.database().ref("videos").orderByChild("userId").equalTo(currentUser.uid);
-        const onValueChange = userVideosRef.on("value", (snapshot) => {
+        const database = getDatabase();
+        const userVideosRef = ref(database, "videos");
+        const filteredUserVideosRef = query(userVideosRef, orderByChild("userId"), equalTo(currentUser.uid));
+        const onValueChange = onValue(filteredUserVideosRef, (snapshot) => {
           const videosData = snapshot.val();
           const videosList = [];
           for (const videoId in videosData) {
@@ -53,7 +55,7 @@ const UserVideo = () => {
         });
 
         return () => {
-          userVideosRef.off("value", onValueChange);
+          off(filteredUserVideosRef, "value", onValueChange);
         };
       }
     };
@@ -94,10 +96,6 @@ const UserVideo = () => {
       }
     }
   }, [user]);
-
-
-
-
 
   if (!user) {
     return <div>Loading...</div>;
@@ -155,7 +153,8 @@ const UserVideo = () => {
                           <IonSelectOption value="Enthusiast">Enthusiast</IonSelectOption>
                         </IonSelect>
                         <IonButton onClick={saveProfile}>Save</IonButton>
-                        <IonButton onClick={() => setShowModal(false)}>Cancel</IonButton>
+                        <IonButton onClick={() => setShowModal(false)}>
+                          Cancel</IonButton>
                       </IonContent>
                     </IonModal>
                   </div>
@@ -179,3 +178,4 @@ const UserVideo = () => {
 };
 
 export default UserVideo;
+

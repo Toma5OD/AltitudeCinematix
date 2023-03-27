@@ -1,15 +1,19 @@
-
-import 'firebase/database';
+import { initializeApp } from "firebase/app";
+import { limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
+import { signInWithPopup, GoogleAuthProvider, reauthenticateWithCredential, EmailAuthProvider, updateEmail as updateAuthEmail, updatePassword as updateAuthPassword, getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, User, createUserWithEmailAndPassword } from "firebase/auth";
+import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+// import { httpsCallable } from "firebase/functions";
 import { v4 as uuidv4 } from "uuid";
-import firebase from "firebase/app";
 import config from "./firebaseCredentials";
 // import { processVideo } from "../functions/src/index";
 
-firebase.initializeApp(config);
+export const firebaseApp = initializeApp(config);
+export const auth = getAuth(firebaseApp);
+export const database = getDatabase(firebaseApp);
 
-export function getCurrentUser(): Promise<firebase.User | null> {
+export function getCurrentUser(): Promise<User | null> {
 	return new Promise((resolve) => {
-		const unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
+		const unsubscribe = onAuthStateChanged(auth, function (user) {
 			if (user) {
 				resolve(user);
 			} else {
@@ -21,15 +25,13 @@ export function getCurrentUser(): Promise<firebase.User | null> {
 }
 
 export function logoutUser() {
-	return firebase.auth().signOut();
+	return signOut(auth);
 }
 
 export async function loginUser(username: string, password: string) {
 	const email = `${username}`;
 	try {
-		const res = await firebase
-			.auth()
-			.signInWithEmailAndPassword(email, password);
+		const res = await signInWithEmailAndPassword(auth, email, password);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -45,10 +47,10 @@ export const registerUser = async (
 	phoneNumber: string
 ) => {
 	try {
-		const res = await firebase.auth().createUserWithEmailAndPassword(username, password);
+		const res = await createUserWithEmailAndPassword(auth, username, password);
 		const defaultAvatarUrl = "https://ionicframework.com/docs/img/demos/avatar.svg";
 
-		await firebase.database().ref(`users/${res.user?.uid}`).set({
+		await set(ref(database, `users/${res.user?.uid}`), {
 			firstName,
 			lastName,
 			phoneNumber,
@@ -64,36 +66,55 @@ export const registerUser = async (
 	}
 };
 
-export async function readUserData(uid: string) {
-	try {
-		const snapshot = await firebase
-			.database()
-			.ref(`users/${uid}`)
-			.once('value');
-		return snapshot.val();
-	} catch (error) {
-		console.log(error);
-		return null;
-	}
+
+export async function readUserData(uid: string): Promise<any> {
+  try {
+    const db = getDatabase();
+    const userRef = ref(db, `users/${uid}`);
+
+    const userData = await new Promise((resolve, reject) => {
+      const callback = (snapshot: DataSnapshot) => {
+        const data = snapshot.val();
+        off(userRef, 'value', callback);
+        resolve(data);
+      };
+
+      const errorCallback = (error: Error) => {
+		reject(error);
+	  };
+
+      onValue(userRef, callback, errorCallback);
+    });
+
+    return userData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+
+export function getDbRef(path: string) {
+	return ref(database, path);
 }
 
 export async function updateEmail(newEmail: string): Promise<void> {
-	const currentUser = firebase.auth().currentUser;
+	const currentUser = auth.currentUser;
 
 	if (!currentUser) {
 		throw new Error('No authenticated user found');
 	}
 
-	await currentUser.updateEmail(newEmail);
+	await updateAuthEmail(currentUser, newEmail);
 }
 
 export async function updateUserPassword(newPassword: string) {
 	try {
-		const currentUser = firebase.auth().currentUser;
+		const currentUser = auth.currentUser;
 		if (!currentUser) {
 			throw new Error('No authenticated user found');
 		}
-		await currentUser.updatePassword(newPassword);
+		await updateAuthPassword(currentUser, newPassword);
 	} catch (error) {
 		console.log(error);
 		return null;
@@ -102,13 +123,13 @@ export async function updateUserPassword(newPassword: string) {
 
 export async function reauthenticateUser(password: string) {
 	try {
-		const currentUser = firebase.auth().currentUser;
+		const currentUser = auth.currentUser;
 		if (!currentUser) {
 			throw new Error('No authenticated user found');
 		}
 
-		const credential = firebase.auth.EmailAuthProvider.credential(currentUser.email!, password);
-		await currentUser.reauthenticateWithCredential(credential);
+		const credential = EmailAuthProvider.credential(currentUser.email!, password);
+		await reauthenticateWithCredential(currentUser, credential);
 	} catch (error) {
 		console.log(error);
 		return null;
@@ -117,7 +138,7 @@ export async function reauthenticateUser(password: string) {
 
 export async function updateUserData(updates: { [key: string]: any }, userId?: string) {
 	try {
-		const currentUser = firebase.auth().currentUser;
+		const currentUser = auth.currentUser;
 		if (!currentUser && !userId) {
 			throw new Error('No authenticated user found');
 		}
@@ -125,9 +146,9 @@ export async function updateUserData(updates: { [key: string]: any }, userId?: s
 		if (!targetUserId) {
 			throw new Error('No target user ID found');
 		}
-		const userRef = firebase.database().ref(`users/${targetUserId}`);
-		await userRef.update(updates);
-		const snapshot = await userRef.once('value');
+		const userRef = databaseRef(database, `users/${targetUserId}`);
+		await update(userRef, updates);
+		const snapshot = await get(userRef);
 		return snapshot.val();
 	} catch (error) {
 		console.log(error);
@@ -137,8 +158,8 @@ export async function updateUserData(updates: { [key: string]: any }, userId?: s
 
 export async function updateUserDataFree(uid: string, updates: { [key: string]: any }) {
 	try {
-		const userRef = firebase.database().ref(`users/${uid}`);
-		await userRef.update(updates);
+		const userRef = databaseRef(database, `users/${uid}`);
+		await update(userRef, updates);
 		return updates;
 	} catch (error) {
 		console.log(error);
@@ -146,21 +167,29 @@ export async function updateUserDataFree(uid: string, updates: { [key: string]: 
 	}
 }
 
-export async function uploadVideo(file: File, title: string, user: firebase.User,
-	onUploadProgress: (progress: number) => void) {
-
+export async function uploadVideo(
+	file: File,
+	title: string,
+	user: User,
+	onUploadProgress: (progress: number) => void
+) {
 	try {
 		const videoId = uuidv4();
-		const storageRef = firebase.storage().ref(`videos/${videoId}/${file.name}`);
+		const storage = getStorage(firebaseApp);
+		const videoStorageRef = storageRef(storage, `videos/${videoId}/${file.name}`);
 
 		const metadata = {
 			contentType: file.type,
 			customMetadata: {
 				userId: user.uid,
+				videoId: videoId,
+				title: title,
 			},
 		};
 
-		const uploadTask = storageRef.put(file, metadata);
+		const uploadTask = uploadBytesResumable(videoStorageRef, file, metadata);
+
+		const videoDatabaseRef = databaseRef(getDatabase(), `videos/${videoId}`);
 
 		uploadTask.on(
 			"state_changed",
@@ -170,36 +199,16 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 			},
 			(error) => {
 				console.log(error);
+				off(videoDatabaseRef);
 				throw error;
 			},
 			async () => {
-				const downloadURL = await storageRef.getDownloadURL();
-
-				try {
-					const response = await firebase.functions().httpsCallable("processVideo")({
-						videoPath: downloadURL,
-					});
-
-					if (response.data.success) {
-						console.log("Video processed successfully");
-					} else {
-						console.log("Video processing failed:", response.data.message);
+				onValue(videoDatabaseRef, (snapshot) => {
+					if (snapshot.exists()) {
+						off(videoDatabaseRef);
+						console.log("Upload complete");
 					}
-				} catch (error) {
-					console.log("Error calling processVideo function:", error);
-				}
-
-				const videoData = {
-					title,
-					url: downloadURL,
-					fileName: file.name,
-					userId: user.uid,
-					timestamp: firebase.database.ServerValue.TIMESTAMP,
-				};
-
-				await firebase.database().ref(`videos/${videoId}`).set(videoData);
-
-				console.log("Upload complete");
+				});
 			}
 		);
 
@@ -212,10 +221,14 @@ export async function uploadVideo(file: File, title: string, user: firebase.User
 
 export async function getUserVideos(userId: string): Promise<any[]> {
 	try {
-		const userVideosRef = firebase.database().ref("videos").orderByChild("userId").equalTo(userId);
-		const snapshot = await userVideosRef.once("value");
+		const db = getDatabase();
+		const userVideosRef = ref(db, "videos");
+		const q = query(userVideosRef, orderByChild("userId"), equalTo(userId));
+
+		const snapshot = await get(q);
 		const videos: any[] = [];
-		snapshot.forEach((childSnapshot) => {
+
+		snapshot.forEach((childSnapshot: DataSnapshot) => {
 			videos.push({ ...childSnapshot.val(), id: childSnapshot.key, fileName: childSnapshot.val().fileName });
 		});
 
@@ -229,11 +242,11 @@ export async function getUserVideos(userId: string): Promise<any[]> {
 export async function deleteVideo(videoId: string, userId: string, fileName: string): Promise<void> {
 	try {
 		// Remove the video from the storage bucket
-		const storageRef = firebase.storage().ref(`videos/${videoId}/${fileName}`);
-		await storageRef.delete();
+		const videoStorageRef = storageRef(getStorage(firebaseApp), `videos/${videoId}/${fileName}`);
+		await deleteObject(videoStorageRef);
 
 		// Remove the video from the database
-		await firebase.database().ref(`videos/${videoId}`).remove();
+		await remove(ref(database, `videos/${videoId}`));
 	} catch (error) {
 		console.error("Error deleting video:", error);
 		throw error;
@@ -242,10 +255,18 @@ export async function deleteVideo(videoId: string, userId: string, fileName: str
 
 export async function getLatestVideos(limit: number): Promise<any[]> {
 	try {
-		const latestVideosRef = firebase.database().ref("videos").orderByChild("timestamp").limitToLast(limit);
-		const snapshot = await latestVideosRef.once("value");
+		const latestVideosQuery = query(ref(database, "videos"), orderByChild("timestamp"), limitToLast(limit));
+		const snapshot = await new Promise((resolve) => {
+			let listener: any;
+			listener = onValue(latestVideosQuery, (snap) => {
+				if (listener) {
+					off(latestVideosQuery, "value", listener);
+				}
+				resolve(snap);
+			});
+		});
 		const videos: any[] = [];
-		snapshot.forEach((childSnapshot) => {
+		(snapshot as DataSnapshot).forEach((childSnapshot: DataSnapshot) => {
 			videos.push({ ...childSnapshot.val(), id: childSnapshot.key });
 		});
 
@@ -260,8 +281,8 @@ export async function getLatestVideos(limit: number): Promise<any[]> {
 
 export async function getVideoById(videoId: string): Promise<any | null> {
 	try {
-		const videoRef = firebase.database().ref(`videos/${videoId}`);
-		const snapshot = await videoRef.once('value');
+		const videoRef = ref(database, `videos/${videoId}`);
+		const snapshot = await get(videoRef);
 		if (snapshot.exists()) {
 			const videoData = snapshot.val();
 			return { ...videoData, id: snapshot.key };
@@ -275,9 +296,10 @@ export async function getVideoById(videoId: string): Promise<any | null> {
 }
 
 export async function loginWithGoogle() {
-	const provider = new firebase.auth.GoogleAuthProvider();
+	const provider = new GoogleAuthProvider();
 	try {
-		const result = await firebase.auth().signInWithPopup(provider);
+		const auth = getAuth(firebaseApp);
+		const result = await signInWithPopup(auth, provider);
 		return result;
 	} catch (error) {
 		console.error("Error logging in with Google:", error);
@@ -285,7 +307,7 @@ export async function loginWithGoogle() {
 	}
 }
 
-export async function addUserToDatabase(user: firebase.User) {
+export async function addUserToDatabase(user: User) {
 	const nameParts = user.displayName?.split(" ") || [];
 
 	const userData = {
@@ -298,7 +320,7 @@ export async function addUserToDatabase(user: firebase.User) {
 	};
 
 	try {
-		await firebase.database().ref(`users/${user.uid}`).set(userData);
+		await set(ref(database, `users/${user.uid}`), userData);
 	} catch (error) {
 		console.error("Error adding user to database:", error);
 	}
@@ -306,11 +328,10 @@ export async function addUserToDatabase(user: firebase.User) {
 
 export const uploadProfilePicture = async (userId: string, file: File): Promise<string | null> => {
 	try {
-		const storageRef = firebase.storage().ref();
-		const profilePicRef = storageRef.child(`profile_pictures/${userId}`);
-		await profilePicRef.put(file);
-		const url = await profilePicRef.getDownloadURL();
-		await firebase.database().ref(`users/${userId}`).update({ photoURL: url });
+		const profilePicRef = storageRef(getStorage(firebaseApp), `profile_pictures/${userId}`);
+		await uploadBytesResumable(profilePicRef, file);
+		const url = await getDownloadURL(profilePicRef);
+		await update(ref(database, `users/${userId}`), { photoURL: url });
 		return url;
 	} catch (error) {
 		console.log(error);
@@ -318,3 +339,22 @@ export const uploadProfilePicture = async (userId: string, file: File): Promise<
 	}
 };
 
+export async function searchVideos(searchString: string): Promise<any[]> {
+	try {
+		const allVideosSnapshot = await get(ref(database, "videos"));
+		const allVideos = allVideosSnapshot.val();
+		const matchingVideos: any[] = [];
+
+		for (const videoId in allVideos) {
+			const video = allVideos[videoId];
+			if (video.title.toLowerCase().includes(searchString.toLowerCase())) {
+				matchingVideos.push({ ...video, id: videoId });
+			}
+		}
+
+		return matchingVideos;
+	} catch (error) {
+		console.error("Error searching for videos:", error);
+		return [];
+	}
+}

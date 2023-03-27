@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getCurrentUser, uploadVideo } from "../firebaseConfig";
-import firebase from "firebase/app";
+import { User } from "firebase/auth";
 import "./VideoUpload.css";
 import { toast } from "../toast";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 interface VideoUploadProps {
   onUploadComplete: (status: boolean) => void;
@@ -13,7 +14,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
-  const [user, setUser] = useState<firebase.User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [title, setTitle] = useState<string>("");
   const [uploadComplete, setUploadComplete] = useState(false);
 
@@ -50,18 +51,18 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
         const user = await getCurrentUser();
         if (user) {
           await uploadVideo(file, title, user, (progress) => setProgress(progress));
-          toast("Video uploaded successfully"); // Update this line
+          toast("Video uploaded successfully");
           setUploadComplete(true);
         } else {
-          toast("User not found"); // Update this line
+          toast("User not found");
         }
       } catch (error) {
-        toast("Failed to upload video"); // Update this line
+        toast("Failed to upload video");
       }
     } else {
-      toast("Please select a file and provide a title"); // Update this line
+      toast("Please select a file and provide a title");
     }
-  };  
+  };
 
   useEffect(() => {
     if (uploadComplete) {
