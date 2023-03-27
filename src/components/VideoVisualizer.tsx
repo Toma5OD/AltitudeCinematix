@@ -9,14 +9,13 @@ type Video = {
   title: string;
   thumbnail: string;
   url: string;
-  userId: string; // Add the userId property
-  fileName: string; // Add the fileName property
+  userId: string;
+  fileName: string; 
 };
-
 
 interface VideoVisualizerProps {
   video: Video;
-  refresh: () => void; // Add the refresh property
+  refresh: () => void; 
 }
 
 const VideoVisualizer: React.FC<VideoVisualizerProps> = ({ video, refresh }) => {

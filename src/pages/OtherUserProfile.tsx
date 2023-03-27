@@ -5,7 +5,7 @@ import VideoVisualizerReadOnly from "../components/VideoVisualizerReadOnly";
 import "./OtherUserProfile.css";
 import { useParams } from "react-router-dom";
 import { getUserVideos, readUserData } from "../firebaseConfig";
-import firebase from "firebase/compat/app";
+import { query, getDatabase, ref, onValue, off, orderByChild, equalTo, DataSnapshot } from 'firebase/database';
 
 const OtherUserProfile = () => {
     const [videos, setVideos] = useState<any[]>([]);
@@ -18,8 +18,12 @@ const OtherUserProfile = () => {
                 const userData = await readUserData(userId);
                 setUser(userData);
 
-                const userVideosRef = firebase.database().ref("videos").orderByChild("userId").equalTo(userId);
-                const onValueChange = userVideosRef.on("value", (snapshot) => {
+                const db = getDatabase();
+                const userVideosRef = ref(db, 'videos');
+                const filteredVideosRef = orderByChild('userId');
+                const videosRefEqualToUserId = query(userVideosRef, filteredVideosRef, equalTo(userId));
+
+                const onValueChange = onValue(videosRefEqualToUserId, (snapshot: DataSnapshot) => {
                     const videosData = snapshot.val();
                     const videosList = [];
                     for (const videoId in videosData) {
@@ -32,7 +36,7 @@ const OtherUserProfile = () => {
                 });
 
                 return () => {
-                    userVideosRef.off("value", onValueChange);
+                    off(userVideosRef, 'value', onValueChange);
                 };
             }
         };
@@ -87,3 +91,5 @@ const OtherUserProfile = () => {
 };
 
 export default OtherUserProfile;
+
+

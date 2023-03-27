@@ -17,7 +17,6 @@ ion-grid{
 .user-video-container {
   display: flex;
   flex-wrap: wrap;
-  height: 100%;
   background-color: rgb(0, 0, 0);
 }
 

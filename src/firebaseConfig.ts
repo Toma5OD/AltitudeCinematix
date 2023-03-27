@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, serverTimestamp, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
+import { limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
 import { signInWithPopup, GoogleAuthProvider, reauthenticateWithCredential, EmailAuthProvider, updateEmail as updateAuthEmail, updatePassword as updateAuthPassword, getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, User, createUserWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 // import { httpsCallable } from "firebase/functions";
@@ -66,15 +66,33 @@ export const registerUser = async (
 	}
 };
 
-export async function readUserData(uid: string) {
-	try {
-		const snapshot = await get(ref(database, `users/${uid}`));
-		return snapshot.val();
-	} catch (error) {
-		console.log(error);
-		return null;
-	}
+
+export async function readUserData(uid: string): Promise<any> {
+  try {
+    const db = getDatabase();
+    const userRef = ref(db, `users/${uid}`);
+
+    const userData = await new Promise((resolve, reject) => {
+      const callback = (snapshot: DataSnapshot) => {
+        const data = snapshot.val();
+        off(userRef, 'value', callback);
+        resolve(data);
+      };
+
+      const errorCallback = (error: Error) => {
+		reject(error);
+	  };
+
+      onValue(userRef, callback, errorCallback);
+    });
+
+    return userData;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
+
 
 export function getDbRef(path: string) {
 	return ref(database, path);
@@ -164,40 +182,37 @@ export async function uploadVideo(
 			contentType: file.type,
 			customMetadata: {
 				userId: user.uid,
+				videoId: videoId,
+				title: title,
 			},
 		};
 
 		const uploadTask = uploadBytesResumable(videoStorageRef, file, metadata);
 
+		const videoDatabaseRef = databaseRef(getDatabase(), `videos/${videoId}`);
+
 		uploadTask.on(
-			'state_changed',
+			"state_changed",
 			(snapshot) => {
 				const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 				onUploadProgress(progress);
 			},
 			(error) => {
 				console.log(error);
+				off(videoDatabaseRef);
 				throw error;
 			},
 			async () => {
-				const downloadURL = await getDownloadURL(videoStorageRef);
-
-				const videoData = {
-					title,
-					url: downloadURL,
-					fileName: file.name,
-					userId: user.uid,
-					timestamp: serverTimestamp(),
-				};
-
-				await set(databaseRef(database, `videos/${videoId}`), videoData);
-
-				console.log("Upload complete");
+				onValue(videoDatabaseRef, (snapshot) => {
+					if (snapshot.exists()) {
+						off(videoDatabaseRef);
+						console.log("Upload complete");
+					}
+				});
 			}
 		);
 
 		return uploadTask;
-
 	} catch (error) {
 		console.log(error);
 		return null;
@@ -206,15 +221,14 @@ export async function uploadVideo(
 
 export async function getUserVideos(userId: string): Promise<any[]> {
 	try {
-		const userVideosQuery = query(ref(database, "videos"), orderByChild("userId"), equalTo(userId));
-		const snapshot = await new Promise((resolve) => {
-			const listener = onValue(userVideosQuery, (snap) => {
-				off(userVideosQuery, "value", listener);
-				resolve(snap);
-			});
-		});
+		const db = getDatabase();
+		const userVideosRef = ref(db, "videos");
+		const q = query(userVideosRef, orderByChild("userId"), equalTo(userId));
+
+		const snapshot = await get(q);
 		const videos: any[] = [];
-		(snapshot as DataSnapshot).forEach((childSnapshot: any) => {
+
+		snapshot.forEach((childSnapshot: DataSnapshot) => {
 			videos.push({ ...childSnapshot.val(), id: childSnapshot.key, fileName: childSnapshot.val().fileName });
 		});
 
