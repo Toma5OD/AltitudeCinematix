@@ -1,0 +1,51 @@
+.playlist-page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f0f0f0;
+}
+
+.create-playlist-button {
+    margin-bottom: 1rem;
+    --background: #4caf50;
+    --background-activated: #81c784;
+    --color: #ffffff;
+}
+
+.playlist-list {
+    width: 100%;
+    max-width: 600px;
+}
+
+.playlist-item {
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.playlist-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #424242;
+}
+
+.create-playlist-modal {
+    --width: 90vw;
+    --height: 90vh;
+    --background: white;
+}
+
+.create-playlist-modal ion-label,
+.create-playlist-modal ion-input,
+.create-playlist-modal ion-textarea {
+    color: black !important;
+    padding: 8px;
+}
+
+.video-card-col {
+    font-size: 1.5rem;
+}

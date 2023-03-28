@@ -11,7 +11,7 @@ import MyVideos from "./pages/UserVideo";
 import SingleVideo from './pages/SingleVideo';
 import OtherUserProfile from "./pages/OtherUserProfile";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import PlaylistPage from "./pages/PlaylistPage"; 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -52,6 +52,7 @@ const RoutingSystem: React.FC = () => {
 					<PrivateRoute path="/myvideos" component={MyVideos} exact />
 					<PrivateRoute path="/single-video/:videoId" component={SingleVideo} exact />
 					<PrivateRoute path="/other-user-profile/:userId" component={OtherUserProfile} />
+					<PrivateRoute path="/playlists" component={PlaylistPage} exact />
 				</IonRouterOutlet>
 			</IonReactRouter>
 		</IonApp>

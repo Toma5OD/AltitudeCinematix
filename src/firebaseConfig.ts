@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { onChildRemoved, serverTimestamp, limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
+import { onChildRemoved, serverTimestamp, limitToLast, push, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
 import { signInWithPopup, GoogleAuthProvider, reauthenticateWithCredential, EmailAuthProvider, updateEmail as updateAuthEmail, updatePassword as updateAuthPassword, getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, User, createUserWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 // import { httpsCallable } from "firebase/functions";
@@ -207,17 +207,17 @@ export async function uploadVideo(
 
 		onChildRemoved(videoDatabaseRef, (snapshot) => {
 			if (snapshot.exists()) {
-			  onValidationResult(false, "Video does not meet the requirements and has been removed.");
+				onValidationResult(false, "Video does not meet the requirements and has been removed.");
 			}
-		  });
-		
-		  onValue(videoDatabaseRef, (snapshot) => {
+		});
+
+		onValue(videoDatabaseRef, (snapshot) => {
 			if (snapshot.exists()) {
-			  off(videoDatabaseRef);
-			  console.log("Upload complete");
-			  onValidationResult(true, "Video has passed the validation and is successfully uploaded.");
+				off(videoDatabaseRef);
+				console.log("Upload complete");
+				onValidationResult(true, "Video has passed the validation and is successfully uploaded.");
 			}
-		  });
+		});
 
 		uploadTask.on(
 			"state_changed",
@@ -392,3 +392,55 @@ export async function searchVideos(searchString: string): Promise<any[]> {
 		return [];
 	}
 }
+
+export const createPlaylist = async (playlistName: string, playlistDescription: string, videoIds: string[] = []) => {
+	const auth = getAuth();
+	const currentUser = auth.currentUser;
+	if (!currentUser) return;
+
+	const database = getDatabase();
+	const newPlaylistRef = push(ref(database, `playlists/${currentUser.uid}`));
+	const newPlaylistData = {
+		name: playlistName,
+		description: playlistDescription,
+		videos: videoIds.reduce((acc, videoId) => ({ ...acc, [videoId]: true }), {}),
+	};
+	await set(newPlaylistRef, newPlaylistData);
+};
+
+export const getRecentVideos = async () => {
+	const database = getDatabase();
+	const videosRef = ref(database, "videos");
+	const recentVideosQuery = query(videosRef, orderByChild("uploadDate"), limitToLast(10));
+	const recentVideosSnapshot = await get(recentVideosQuery);
+	const recentVideosVal = recentVideosSnapshot.val();
+
+	if (!recentVideosVal) return [];
+
+	const recentVideos = Object.entries(recentVideosVal).map(([id, videoData]) => ({
+		id,
+		...(typeof videoData === 'object' ? videoData : {}),
+	}));
+
+	return recentVideos;
+};
+
+export const getUserPlaylists = async () => {
+	const auth = getAuth();
+	const currentUser = auth.currentUser;
+	if (!currentUser) return [];
+
+	const database = getDatabase();
+	const userPlaylistsRef = ref(database, `playlists/${currentUser.uid}`);
+	const userPlaylistsSnapshot = await get(userPlaylistsRef);
+	const userPlaylistsVal = userPlaylistsSnapshot.val();
+
+	if (!userPlaylistsVal) return [];
+
+	const playlists = Object.entries(userPlaylistsVal).map(([id, playlistData]) => ({
+		id,
+		...(typeof playlistData === 'object' ? playlistData : {}),
+	}));
+
+	return playlists;
+};

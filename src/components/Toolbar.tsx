@@ -35,6 +35,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ title }) => {
                     <IonButton className="button">My Videos</IonButton>
                 </IonRouterLink>
             </div>
+            <div slot="end" className="playlists-button-container">
+                <IonRouterLink routerLink="/playlists">
+                    <IonButton className="button">Playlists</IonButton>
+                </IonRouterLink>
+            </div>
             <div slot="end" className="dashboard-button-container">
                 <IonRouterLink routerLink="/upload">
                     <IonButton className="button">Upload</IonButton>
