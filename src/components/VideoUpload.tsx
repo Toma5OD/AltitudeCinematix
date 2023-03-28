@@ -1,11 +1,12 @@
 import {
   IonToast,
 } from "@ionic/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getCurrentUser, uploadVideo } from "../firebaseConfig";
 import { getAuth } from "firebase/auth";
 import type { User } from "firebase/auth";
 import "./VideoUpload.css";
+import { getMetadata } from "video-metadata-thumbnails";
 
 interface VideoUploadProps {
   onUploadComplete: (status: boolean) => void;
@@ -20,6 +21,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,14 +40,32 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
     }
   }, [uploadComplete, onUploadComplete]);
 
+  const isValidResolution = (width: number, height: number) => {
+    return width >= 1280 && height >= 720 && width > height;
+  };
+
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       if (selectedFile.size > 5 * 1024 * 1024 * 1024) {
         setToastMessage("Selected file is too large. Please select a file smaller than 5 GB.");
       } else {
-        setFile(selectedFile);
-        setFileName(selectedFile.name);
+        try {
+          const metadata = await getMetadata(selectedFile);
+          console.log("metadata:", metadata);
+
+          const { width, height } = metadata;
+
+          if (isValidResolution(width, height)) {
+            setFile(selectedFile);
+            setFileName(selectedFile.name);
+          } else {
+            setToastMessage("Video does not meet requirements");
+            setShowToast(true);
+          }
+        } catch (error) {
+          console.error("Error getting video metadata:", error);
+        }
       }
     }
   };
@@ -66,6 +86,16 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
             }
           );
           setUploadComplete(true);
+          setTimeout(() => {
+            setUploadComplete(false);
+            setFile(null);
+            setFileName(null);
+            setTitle("");
+            setProgress(0);
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
+          }, 1000);
         } else {
           setToastMessage("User not found");
           setShowToast(true);
@@ -73,12 +103,12 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
       } catch (error) {
         setToastMessage("Failed to upload video");
         setShowToast(true);
-      }      
+      }
     } else {
       setToastMessage("Please select a file and provide a title");
       setShowToast(true);
     }
-  };
+  };  
 
   useEffect(() => {
     if (uploadComplete) {
@@ -107,6 +137,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
         id="video-upload-input"
         className="video-upload-input"
         onChange={handleFileSelect}
+        ref={fileInputRef}
       />
       <input
         type="text"
