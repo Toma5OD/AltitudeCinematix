@@ -1,4 +1,3 @@
-const {getDatabase, set, ref, remove} = require("firebase-admin/database");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const {setFfmpegPath, ffprobe} = require("fluent-ffmpeg");
@@ -14,7 +13,7 @@ exports.validateVideo = functions.region("europe-west1").storage.object().onFina
   const filePath = object.name;
 
   // eslint-disable-next-line max-len
-  const validationStatusRef = ref(getDatabase(), `validationStatus/${object.metadata.videoId}`);
+  const validationStatusRef = admin.database().ref(`validationStatus/${object.metadata.videoId}`);
 
   if (!object.contentType.startsWith("video/")) {
     console.log("Not a video, skipping validation.");
@@ -38,29 +37,25 @@ exports.validateVideo = functions.region("europe-west1").storage.object().onFina
             (stream) => stream.codec_type === "video",
         );
         const {width, height} = videoStream;
-        const aspectRatio = height / width;
 
         console.log("Video metadata:", metadata);
         console.log("Width:", width);
         console.log("Height:", height);
-        console.log("Aspect Ratio:", aspectRatio);
-        const targetAspectRatio = 16 / 9;
-        const aspectRatioTolerance = 0.03;
         if (
           width >= 1280 &&
           height >= 720 &&
-          width > height &&
-          Math.abs(aspectRatio - targetAspectRatio) <= aspectRatioTolerance
+          width > height
         ) {
           console.log("Video meets the requirements");
-          await set(validationStatusRef, {status: "success"});
+          await validationStatusRef.set({status: "success"});
           return null;
         } else {
           console.log("Video does not meet the requirements, deleting");
-          await set(validationStatusRef, {status: "failed"});
+          await validationStatusRef.set({status: "failed"});
           // eslint-disable-next-line max-len
-          const videoDatabaseRef = ref(getDatabase(), `videos/${object.metadata.videoId}`);
-          await remove(videoDatabaseRef);
+          const videoDatabaseRef = admin.database().ref().child(`videos/${object.metadata.videoId}`);
+          // Delete the video from Cloud Storage
+          await videoDatabaseRef.remove();
         }
       })
       .catch((err) => {
