@@ -55,9 +55,16 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
       try {
         const user = await getCurrentUser();
         if (user) {
-          await uploadVideo(file, title, user, (progress) => setProgress(progress));
-          setToastMessage("Video uploaded successfully");
-          setShowToast(true);
+          await uploadVideo(
+            file,
+            title,
+            user,
+            (progress) => setProgress(progress),
+            (isValid, message) => {
+              setToastMessage(message);
+              setShowToast(true);
+            }
+          );
           setUploadComplete(true);
         } else {
           setToastMessage("User not found");
@@ -66,7 +73,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
       } catch (error) {
         setToastMessage("Failed to upload video");
         setShowToast(true);
-      }
+      }      
     } else {
       setToastMessage("Please select a file and provide a title");
       setShowToast(true);
@@ -75,7 +82,6 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
 
   useEffect(() => {
     if (uploadComplete) {
-      // Reset the states
       setFile(null);
       setFileName(null);
       setTitle("");

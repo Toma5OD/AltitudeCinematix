@@ -1,64 +1,71 @@
-// Import required packages
+const {getDatabase, set, ref, remove} = require("firebase-admin/database");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-// eslint-disable-next-line max-len
-const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path || "/opt/homebrew/bin/ffmpeg";
-const ffprobePath = require("@ffprobe-installer/ffprobe").path;
-const fluentFfmpeg = require("fluent-ffmpeg");
+const {setFfmpegPath, ffprobe} = require("fluent-ffmpeg");
+const {path: ffmpegPath} = require("@ffmpeg-installer/ffmpeg");
 
-fluentFfmpeg.setFfmpegPath(ffmpegPath);
-fluentFfmpeg.setFfprobePath(ffprobePath);
-
+setFfmpegPath(ffmpegPath);
 admin.initializeApp();
 
 const storage = admin.storage();
-const database = admin.database();
 
-
-// Cloud Function to validate the video
 // eslint-disable-next-line max-len
-exports.validateVideo = functions.storage.object().onFinalize(async (object) => {
-  if (object.contentType && object.contentType.startsWith("video/")) {
-    const filePath = object.name;
-    const fileBucket = object.bucket;
-    const bucket = storage.bucket(fileBucket);
+exports.validateVideo = functions.region("europe-west1").storage.object().onFinalize(async (object) => {
+  const filePath = object.name;
 
-    // Fetch the video metadata
-    const metadata = await new Promise((resolve, reject) => {
-      fluentFfmpeg({source: bucket.file(filePath).createReadStream()})
-          .ffprobe((err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-          });
-    });
+  // eslint-disable-next-line max-len
+  const validationStatusRef = ref(getDatabase(), `validationStatus/${object.metadata.videoId}`);
 
-    const {width, height} = metadata.streams[0];
-    const isHorizontal = width >= height;
-    const isHD = width >= 1280 && height >= 720;
-
-    if (isHorizontal && isHD) {
-      console.log("Video meets the requirements");
-
-      // Extract videoId and userId from the customMetadata
-      const {videoId, userId} = object.metadata;
-
-      // Add video information to the Realtime Database
-      const videoData = {
-        title: object.metadata.title,
-        url: object.mediaLink,
-        fileName: filePath.split("/").pop(),
-        userId: userId,
-        timestamp: admin.database.ServerValue.TIMESTAMP,
-      };
-
-      await database.ref(`videos/${videoId}`).set(videoData);
-      console.log("Video information added to the Realtime Database");
-    } else {
-      console.log("Video does not meet the requirements");
-
-      // Delete the video from Firebase Storage
-      await bucket.file(filePath).delete();
-      console.log("Video removed from Firebase Storage");
-    }
+  if (!object.contentType.startsWith("video/")) {
+    console.log("Not a video, skipping validation.");
+    return null;
   }
+
+  const bucket = storage.bucket(object.bucket);
+  const file = bucket.file(filePath);
+
+  return new Promise((resolve, reject) => {
+    ffprobe(file.createReadStream(), (err, metadata) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(metadata);
+      }
+    });
+  })
+      .then(async (metadata) => {
+        const videoStream = metadata.streams.find(
+            (stream) => stream.codec_type === "video",
+        );
+        const {width, height} = videoStream;
+        const aspectRatio = height / width;
+
+        console.log("Video metadata:", metadata);
+        console.log("Width:", width);
+        console.log("Height:", height);
+        console.log("Aspect Ratio:", aspectRatio);
+        const targetAspectRatio = 16 / 9;
+        const aspectRatioTolerance = 0.03;
+        if (
+          width >= 1280 &&
+          height >= 720 &&
+          width > height &&
+          Math.abs(aspectRatio - targetAspectRatio) <= aspectRatioTolerance
+        ) {
+          console.log("Video meets the requirements");
+          await set(validationStatusRef, {status: "success"});
+          return null;
+        } else {
+          console.log("Video does not meet the requirements, deleting");
+          await set(validationStatusRef, {status: "failed"});
+          // eslint-disable-next-line max-len
+          const videoDatabaseRef = ref(getDatabase(), `videos/${object.metadata.videoId}`);
+          await remove(videoDatabaseRef);
+        }
+      })
+      .catch((err) => {
+        console.error("Error during video validation:", err);
+        return null;
+      });
 });
+

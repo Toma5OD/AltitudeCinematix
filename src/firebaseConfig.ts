@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { serverTimestamp, limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
+import { onChildRemoved, serverTimestamp, limitToLast, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
 import { signInWithPopup, GoogleAuthProvider, reauthenticateWithCredential, EmailAuthProvider, updateEmail as updateAuthEmail, updatePassword as updateAuthPassword, getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, User, createUserWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 // import { httpsCallable } from "firebase/functions";
@@ -12,43 +12,43 @@ export const auth = getAuth(firebaseApp);
 export const database = getDatabase(firebaseApp);
 
 export function getCurrentUser(): Promise<User | null> {
-  return new Promise((resolve) => {
-    const unsubscribe = onAuthStateChanged(auth, function (user) {
-      if (user) {
-        resolve(user);
-      } else {
-        resolve(null);
-      }
-      unsubscribe();
-    });
-  });
+	return new Promise((resolve) => {
+		const unsubscribe = onAuthStateChanged(auth, function (user) {
+			if (user) {
+				resolve(user);
+			} else {
+				resolve(null);
+			}
+			unsubscribe();
+		});
+	});
 }
 
 export function logoutUser() {
-  return signOut(auth);
+	return signOut(auth);
 }
 
 export async function loginUser(username: string, password: string): Promise<User | null> {
-  const email = `${username}`;
-  try {
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    return res.user;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+	const email = `${username}`;
+	try {
+		const res = await signInWithEmailAndPassword(auth, email, password);
+		return res.user;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
 }
 
 export async function loginWithGoogle(): Promise<User | null> {
-  const provider = new GoogleAuthProvider();
-  try {
-    const auth = getAuth(firebaseApp);
-    const result = await signInWithPopup(auth, provider);
-    return result.user;
-  } catch (error) {
-    console.error("Error logging in with Google:", error);
-    return null;
-  }
+	const provider = new GoogleAuthProvider();
+	try {
+		const auth = getAuth(firebaseApp);
+		const result = await signInWithPopup(auth, provider);
+		return result.user;
+	} catch (error) {
+		console.error("Error logging in with Google:", error);
+		return null;
+	}
 }
 
 
@@ -184,7 +184,8 @@ export async function uploadVideo(
 	file: File,
 	title: string,
 	user: User,
-	onUploadProgress: (progress: number) => void
+	onUploadProgress: (progress: number) => void,
+	onValidationResult: (isValid: boolean, message: string) => void
 ) {
 	try {
 		const videoId = uuidv4();
@@ -203,6 +204,20 @@ export async function uploadVideo(
 		const uploadTask = uploadBytesResumable(videoStorageRef, file, metadata);
 
 		const videoDatabaseRef = databaseRef(getDatabase(), `videos/${videoId}`);
+
+		onChildRemoved(videoDatabaseRef, (snapshot) => {
+			if (snapshot.exists()) {
+			  onValidationResult(false, "Video does not meet the requirements and has been removed.");
+			}
+		  });
+		
+		  onValue(videoDatabaseRef, (snapshot) => {
+			if (snapshot.exists()) {
+			  off(videoDatabaseRef);
+			  console.log("Upload complete");
+			  onValidationResult(true, "Video has passed the validation and is successfully uploaded.");
+			}
+		  });
 
 		uploadTask.on(
 			"state_changed",

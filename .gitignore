@@ -5,6 +5,7 @@
 .pnp.js
 src/firebaseCredentials.ts
 .idea
+firebase-adminsdk.json
 
 # testing
 /coverage
