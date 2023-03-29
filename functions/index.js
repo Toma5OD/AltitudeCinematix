@@ -9,11 +9,28 @@ admin.initializeApp();
 const storage = admin.storage();
 
 // eslint-disable-next-line max-len
+exports.resetRatings = functions.pubsub.schedule("0 0 * * SUN").timeZone("Europe/London").onRun(async (context) => {
+  const videosRef = admin.database().ref("videos");
+  const videosSnapshot = await videosRef.once("value");
+  const updates = {};
+
+  videosSnapshot.forEach((video) => {
+    updates[`/${video.key}/ratings`] = {};
+  });
+
+  await videosRef.update(updates);
+  console.log("Ratings have been reset.");
+});
+
+
+// eslint-disable-next-line max-len
 exports.validateVideo = functions.region("europe-west1").storage.object().onFinalize(async (object) => {
   const filePath = object.name;
 
+
+  // THIS LINE CAN BE ENABLED IF YOU WANT TO SEND STATUS TO DATABASE
   // eslint-disable-next-line max-len
-  const validationStatusRef = admin.database().ref(`validationStatus/${object.metadata.videoId}`);
+  // const validationStatusRef = admin.database().ref(`validationStatus/${object.metadata.videoId}`);
 
   if (!object.contentType.startsWith("video/")) {
     console.log("Not a video, skipping validation.");

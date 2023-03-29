@@ -291,7 +291,7 @@ export async function deleteVideo(videoId: string, userId: string, fileName: str
 	}
 }
 
-export async function getLatestVideos(limit: number): Promise<any[]> {
+export async function getLatestVideos(limit: number, userId: string): Promise<any[]> {
 	try {
 		const latestVideosQuery = query(ref(database, "videos"), orderByChild("timestamp"), limitToLast(limit));
 		const snapshot = await new Promise((resolve) => {
@@ -302,7 +302,7 @@ export async function getLatestVideos(limit: number): Promise<any[]> {
 				}
 				resolve(snap);
 			});
-		});
+		}) as DataSnapshot;
 		const videos: any[] = [];
 		(snapshot as DataSnapshot).forEach((childSnapshot: DataSnapshot) => {
 			videos.push({ ...childSnapshot.val(), id: childSnapshot.key });
@@ -310,7 +310,24 @@ export async function getLatestVideos(limit: number): Promise<any[]> {
 
 		videos.reverse();
 
-		return videos;
+		const videosWithUserRating = await Promise.all(
+			videos.map(async (video) => {
+				const userRatingQuery = query(ref(database, `ratings/${video.id}/${userId}`));
+				const userRatingSnapshot = await new Promise((resolve) => {
+					let listener: any;
+					listener = onValue(userRatingQuery, (snap) => {
+						if (listener) {
+							off(userRatingQuery, "value", listener);
+						}
+						resolve(snap);
+					});
+				}) as DataSnapshot;
+				const userRating = userRatingSnapshot.exists() ? userRatingSnapshot.val() : null;
+				return { ...video, userRating };
+			})
+		);
+
+		return videosWithUserRating;
 	} catch (error) {
 		console.error("Error fetching latest videos:", error);
 		return [];
@@ -477,3 +494,26 @@ export async function deletePlaylist(playlistId: string, userId: string): Promis
 		throw error;
 	}
 }
+
+export const getUserRatingForVideo = async (userId: string, videoId: string) => {
+	try {
+		const ratingSnapshot = await get(ref(database, `ratings/${userId}/${videoId}`));
+		if (ratingSnapshot.exists()) {
+			return ratingSnapshot.val();
+		} else {
+			return 0;
+		}
+	} catch (error) {
+		console.log("Error fetching user rating for video:", error);
+		return 0;
+	}
+};
+
+export const rateVideo = async (userId: string, videoId: string, rating: number) => {
+	try {
+		await set(ref(database, `ratings/${userId}/${videoId}`), rating);
+		console.log('Rating submitted successfully');
+	} catch (error) {
+		console.log('Failed to submit rating:', error);
+	}
+};

@@ -75,3 +75,60 @@ slide-content {
   height: 92.5vh;
   object-fit: cover;
 }
+
+.rating-button-container {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.rating-popover-container .popover-content {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.rating-popover {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.average-rating {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+}
+
+.rating-star {
+  color: #ffc409;
+}
+
+.rating-modal-container .modal-content {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.rating-modal {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.star {
+  --ionicon-stroke-width: 32px;
+  opacity: 0.3;
+}
+
+.star.active {
+  opacity: 1;
+}
+
+.video-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
