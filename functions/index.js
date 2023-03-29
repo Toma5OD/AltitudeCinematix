@@ -47,11 +47,17 @@ exports.validateVideo = functions.region("europe-west1").storage.object().onFina
           width > height
         ) {
           console.log("Video meets the requirements");
-          await validationStatusRef.set({status: "success"});
+          // THIS LINE SENDS A STATUS TO BE STORED IN DATABASE.
+          // THIS IS NOT REQUIRED AS CLIENT SIDE CHECKS ARE ALSO IN PLACE
+          // WITH IONTOAST MESSAGES
+          // await validationStatusRef.set({status: "success"});
           return null;
         } else {
           console.log("Video does not meet the requirements, deleting");
-          await validationStatusRef.set({status: "failed"});
+          // THIS LINE SENDS A STATUS TO BE STORED IN DATABASE.
+          // THIS IS NOT REQUIRED AS CLIENT SIDE CHECKS ARE ALSO IN PLACE
+          // WITH IONTOAST MESSAGES
+          // await validationStatusRef.set({status: "failed"});
           // eslint-disable-next-line max-len
           const videoDatabaseRef = admin.database().ref().child(`videos/${object.metadata.videoId}`);
           // Delete the video from Cloud Storage
