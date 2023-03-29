@@ -17,7 +17,7 @@ const VideoCard: React.FC<VideoCardProps> = () => {
 
   useEffect(() => {
     (async () => {
-      const latestVideos = await getLatestVideos(10); // Fetch the latest 10 videos
+      const latestVideos = await getLatestVideos(50);
       const videosWithUserData = await Promise.all(
         latestVideos.map(async (video) => {
           const userData = await readUserData(video.userId);

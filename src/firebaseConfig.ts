@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { onChildRemoved, serverTimestamp, limitToLast, push, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef } from "firebase/database";
+import { onChildRemoved, serverTimestamp, limitToLast, push, orderByChild, DataSnapshot, equalTo, onValue, off, remove, query, getDatabase, ref, set, get, update, ref as databaseRef, child } from "firebase/database";
 import { signInWithPopup, GoogleAuthProvider, reauthenticateWithCredential, EmailAuthProvider, updateEmail as updateAuthEmail, updatePassword as updateAuthPassword, getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, User, createUserWithEmailAndPassword } from "firebase/auth";
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 // import { httpsCallable } from "firebase/functions";
@@ -411,7 +411,7 @@ export const createPlaylist = async (playlistName: string, playlistDescription: 
 export const getRecentVideos = async () => {
 	const database = getDatabase();
 	const videosRef = ref(database, "videos");
-	const recentVideosQuery = query(videosRef, orderByChild("uploadDate"), limitToLast(10));
+	const recentVideosQuery = query(videosRef, orderByChild("uploadDate"), limitToLast(20));
 	const recentVideosSnapshot = await get(recentVideosQuery);
 	const recentVideosVal = recentVideosSnapshot.val();
 
@@ -437,10 +437,43 @@ export const getUserPlaylists = async () => {
 
 	if (!userPlaylistsVal) return [];
 
-	const playlists = Object.entries(userPlaylistsVal).map(([id, playlistData]) => ({
-		id,
-		...(typeof playlistData === 'object' ? playlistData : {}),
-	}));
+	const playlists = Object.entries(userPlaylistsVal).map(([id, playlistData]) => {
+		const typedPlaylistData = playlistData as { name: string; description: string; videos?: { [key: string]: boolean } };
+		return {
+			id,
+			...(typeof playlistData === 'object' ? playlistData : {}),
+			videos: typedPlaylistData.videos ? Object.keys(typedPlaylistData.videos).map(videoId => ({ id: videoId })) : [],
+		};
+	});
 
 	return playlists;
 };
+
+export const getVideosByIds = async (videoIds: string[]) => {
+	const database = getDatabase();
+	const videosRef = ref(database, "videos");
+
+	const videoPromises = videoIds.map(async (videoId) => {
+		const singleVideoRef = child(videosRef, videoId);
+		const singleVideoSnapshot = await get(singleVideoRef);
+		const videoData = singleVideoSnapshot.val();
+		return {
+			id: videoId,
+			...(typeof videoData === 'object' ? videoData : {}),
+		};
+	});
+
+	const videos = await Promise.all(videoPromises);
+	return videos;
+};
+
+export async function deletePlaylist(playlistId: string, userId: string): Promise<void> {
+	try {
+		const database = getDatabase();
+		const playlistRef = ref(database, `playlists/${userId}/${playlistId}`);
+		await remove(playlistRef);
+	} catch (error) {
+		console.error("Error deleting playlist:", error);
+		throw error;
+	}
+}

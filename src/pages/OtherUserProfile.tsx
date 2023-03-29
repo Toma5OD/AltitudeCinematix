@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IonContent, IonHeader, IonPage, IonGrid, IonRow, IonCol, IonAvatar } from "@ionic/react";
+import { IonContent, IonLoading, IonHeader, IonPage, IonGrid, IonRow, IonCol, IonAvatar } from "@ionic/react";
 import Toolbar from "../components/Toolbar";
 import VideoVisualizerReadOnly from "../components/VideoVisualizerReadOnly";
 import "./OtherUserProfile.css";
@@ -11,9 +11,11 @@ const OtherUserProfile = () => {
     const [videos, setVideos] = useState<any[]>([]);
     const [user, setUser] = useState<any>(null);
     const { userId } = useParams<{ userId: string }>();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchUserVideos = async () => {
+            setIsLoading(true);
             if (userId) {
                 const userData = await readUserData(userId);
                 setUser(userData);
@@ -33,6 +35,7 @@ const OtherUserProfile = () => {
                         });
                     }
                     setVideos(videosList);
+                    setIsLoading(false);
                 });
 
                 return () => {
@@ -80,6 +83,10 @@ const OtherUserProfile = () => {
                                             <VideoVisualizerReadOnly key={index} video={video} />
                                         ))}
                                     </div>
+                                    <IonLoading
+                                        isOpen={isLoading}
+                                        message={"Loading..."}
+                                    />
                                 </div>
                             </IonCol>
                         </IonRow>

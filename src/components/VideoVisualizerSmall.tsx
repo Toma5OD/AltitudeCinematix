@@ -16,15 +16,15 @@ interface VideoVisualizerReadOnlyProps {
 
 const VideoVisualizerReadOnly: React.FC<VideoVisualizerReadOnlyProps> = ({ video, children }) => {
   return (
-    <div className="video-visualizer">
+    <div className="video-visualizer1">
       <video
         src={video.url}
         poster={video.thumbnail}
-        className="video-thumbnail"
+        className="video-thumbnail1"
         controls
       />
       <h3 className="video-title">{video.title}</h3>
-      <div className="video-checkbox-container">
+      <div className="video-checkbox-container1">
         {children}
       </div>
     </div>

@@ -3,6 +3,7 @@ import {
   IonModal,
   IonButton,
   IonLabel,
+  IonLoading,
   IonTextarea,
   IonSelect,
   IonSelectOption,
@@ -30,14 +31,16 @@ const UserVideo = () => {
   const userTypeRef = useRef<HTMLIonSelectElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchUserVideos = async () => {
       const currentUser = await getCurrentUser();
       if (currentUser) {
         const userData = await readUserData(currentUser.uid);
         setUser({ ...userData, uid: currentUser.uid });
-  
+
         const database = getDatabase();
         const userVideosRef = ref(database, "videos");
         const filteredUserVideosRef = query(userVideosRef, orderByChild("userId"), equalTo(currentUser.uid));
@@ -50,18 +53,20 @@ const UserVideo = () => {
               ...videosData[videoId],
             });
           }
+          setIsLoading(false);
           setVideos(videosList);
         });
-  
+
         return () => {
+          
           off(filteredUserVideosRef, "value", onValueChange);
         };
       }
     };
-  
+
     fetchUserVideos();
   }, []);
-    
+
   const refresh = () => {
     // Add a refresh function here if needed
   };
@@ -156,6 +161,10 @@ const UserVideo = () => {
                           Cancel</IonButton>
                       </IonContent>
                     </IonModal>
+                    <IonLoading
+                      isOpen={isLoading}
+                      message={"Loading..."}
+                    />
                   </div>
                 </IonCol>
                 <IonCol size="9">

@@ -3,7 +3,14 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    background-color: #f0f0f0;
+    background-color: #ba16c5;
+}
+
+.video-card-container-4 {
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: none;
+    background-color: orange;
 }
 
 .create-playlist-button {
@@ -13,10 +20,11 @@
     --color: #ffffff;
 }
 
-.playlist-list {
-    width: 100%;
-    max-width: 600px;
-}
+.swiper4 {
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: none;
+  }
 
 .playlist-item {
     background-color: #ffffff;
@@ -46,6 +54,22 @@
     padding: 8px;
 }
 
-.video-card-col {
-    font-size: 1.5rem;
+.playlist-title {
+    font-size: 2em;
+    font-weight: bold;
+    padding-bottom: 10px;
+    color: black;
+}
+
+.playlist-description {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.playlist-video-view {
+    height: 92.5vh;
+    width: 100vw;
 }
