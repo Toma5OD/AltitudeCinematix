@@ -79,9 +79,15 @@ const OtherUserProfile = () => {
                             <IonCol size="9">
                                 <div className="user-video-container--other">
                                     <div className="user-video-card--other">
-                                        {videos.map((video, index) => (
-                                            <VideoVisualizerReadOnly key={index} video={video} />
-                                        ))}
+                                        {videos.length > 0 ? (
+                                            videos.map((video, index) => (
+                                                <VideoVisualizerReadOnly key={index} video={video} />
+                                            ))
+                                        ) : (
+                                            <div className="no-videos-message--other">
+                                                <p>{user.firstName} {user.lastName} does not have any videos uploaded.</p>
+                                            </div>
+                                        )}
                                     </div>
                                     <IonLoading
                                         isOpen={isLoading}

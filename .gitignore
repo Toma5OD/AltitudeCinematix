@@ -6,6 +6,9 @@
 src/firebaseCredentials.ts
 .idea
 firebase-adminsdk.json
+functions/node_modules
+functions/package-lock.json
+functions/.gitignore
 
 # testing
 /coverage

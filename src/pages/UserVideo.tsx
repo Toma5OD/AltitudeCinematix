@@ -58,7 +58,7 @@ const UserVideo = () => {
         });
 
         return () => {
-          
+
           off(filteredUserVideosRef, "value", onValueChange);
         };
       }
@@ -170,9 +170,16 @@ const UserVideo = () => {
                 <IonCol size="9">
                   <div className="user-video-container">
                     <div className="user-video-card">
-                      {videos.map((video, index) => (
-                        <VideoVisualizer key={index} video={video} refresh={refresh} />
-                      ))}
+                      {videos.length === 0 ? (
+                        <div className="no-videos-message">
+                          <h2>You have not uploaded any videos yet.</h2>
+                          <h2>Upload some videos today! or continue viewing</h2>
+                        </div>
+                      ) : (
+                        videos.map((video, index) => (
+                          <VideoVisualizer key={index} video={video} refresh={refresh} />
+                        ))
+                      )}
                     </div>
                   </div>
                 </IonCol>

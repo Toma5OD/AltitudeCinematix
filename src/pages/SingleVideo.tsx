@@ -42,22 +42,24 @@ const SingleVideo: React.FC = () => {
       <IonHeader>
         <Toolbar title="Single Video" />
       </IonHeader>
-      <IonContent fullscreen>
-        <div className="single-video-container">
-          <FullScreen handle={screen}>
-            <video
-              className="video-player-1"
-              src={video.url}
-              controls
-              onClick={handleFullscreenClick}
-            ></video>
-          </FullScreen>
-          <div className="video-info">
-            <h2 className="video-title-1">{video.title}</h2>
-            <p className="video-author-1">By: {userData.firstName} {userData.lastName}</p>
+      <div className="custom-ion-content22">
+        <IonContent fullscreen>
+          <div className="single-video-container">
+            <FullScreen handle={screen}>
+              <video
+                className="video-player-1"
+                src={video.url}
+                controls
+                onClick={handleFullscreenClick}
+              ></video>
+            </FullScreen>
+            <div className="video-info">
+              <h2 className="video-title-1">{video.title}</h2>
+              <p className="video-author-1">By: {userData.firstName} {userData.lastName}</p>
+            </div>
           </div>
-        </div>
-      </IonContent>
+        </IonContent>
+      </div>
     </IonPage>
   );
 };
