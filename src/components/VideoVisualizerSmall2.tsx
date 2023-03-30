@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./VideoVisualizerSmall2.css";
-import { IonRouterLink } from "@ionic/react";
+import { IonSpinner, IonRouterLink } from "@ionic/react";
 
 type Video = {
   id: string;
@@ -20,6 +20,7 @@ interface VideoVisualizerSmall2Props {
 }
 
 const VideoVisualizerSmall2: React.FC<VideoVisualizerSmall2Props> = ({ video, children }) => {
+  const [loading, setLoading] = useState(true);
   return (
     <div className="video-visualizer-small2">
       <video
@@ -27,7 +28,13 @@ const VideoVisualizerSmall2: React.FC<VideoVisualizerSmall2Props> = ({ video, ch
         poster={video.thumbnail}
         className="video-thumbnail-small2"
         controls
+        onLoadedData={() => setLoading(false)}
       />
+      {loading && (
+        <div className="spinner-container">
+          <IonSpinner />
+        </div>
+      )}
       <div className="video-info-small2">
         <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title-small">
           {video.title}

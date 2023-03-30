@@ -1,5 +1,6 @@
 import React from "react";
 import "./VideoVisualizer.css";
+import { IonSpinner } from "@ionic/react";
 
 type Video = {
   id: string;

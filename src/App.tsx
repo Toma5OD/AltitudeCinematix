@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { setupIonicReact, IonApp, IonRouterOutlet, IonSpinner } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
@@ -10,6 +10,7 @@ import Upload from "./pages/Upload";
 import MyVideos from "./pages/UserVideo";
 import SingleVideo from './pages/SingleVideo';
 import OtherUserProfile from "./pages/OtherUserProfile";
+import WeeklyChart from "./pages/WeeklyChart";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import PlaylistPage from "./pages/PlaylistPage"; 
 /* Core CSS required for Ionic components to work properly */
@@ -30,7 +31,6 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import { getCurrentUser } from "./firebaseConfig";
 
 import { useDispatch } from "react-redux";
 import { setUserState } from "./redux/actions";
@@ -53,6 +53,7 @@ const RoutingSystem: React.FC = () => {
 					<PrivateRoute path="/single-video/:videoId" component={SingleVideo} exact />
 					<PrivateRoute path="/other-user-profile/:userId" component={OtherUserProfile} />
 					<PrivateRoute path="/playlists" component={PlaylistPage} exact />
+					<PrivateRoute path="/weeklychart" component={WeeklyChart} exact />
 				</IonRouterOutlet>
 			</IonReactRouter>
 		</IonApp>
@@ -75,7 +76,6 @@ const App: React.FC = () => {
             }
             setBusy(false);
         });
-
         return () => unsubscribe();
     }, [dispatch]);
 

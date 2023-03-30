@@ -41,6 +41,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ title }) => {
                 </IonRouterLink>
             </div>
             <div slot="end" className="dashboard-button-container">
+                <IonRouterLink routerLink="/weeklychart">
+                    <IonButton className="button">Weekly Chart</IonButton>
+                </IonRouterLink>
+            </div>
+            <div slot="end" className="dashboard-button-container">
                 <IonRouterLink routerLink="/upload">
                     <IonButton className="button">Upload</IonButton>
                 </IonRouterLink>
@@ -58,9 +63,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ title }) => {
                 </IonRouterLink>
             </div>
             <div slot="end" className="logout-button-container">
-                <IonRouterLink routerLink="/">
-                    <IonButton className="button" onClick={logout}>Logout</IonButton>
-                </IonRouterLink>
+                <IonButton onClick={logout} className="button">Logout</IonButton>
             </div>
         </IonToolbar>
     );

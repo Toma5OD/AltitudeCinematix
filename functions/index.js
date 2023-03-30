@@ -22,11 +22,9 @@ exports.resetRatings = functions.pubsub.schedule("0 0 * * SUN").timeZone("Europe
   console.log("Ratings have been reset.");
 });
 
-
 // eslint-disable-next-line max-len
 exports.validateVideo = functions.region("europe-west1").storage.object().onFinalize(async (object) => {
   const filePath = object.name;
-
 
   // THIS LINE CAN BE ENABLED IF YOU WANT TO SEND STATUS TO DATABASE
   // eslint-disable-next-line max-len

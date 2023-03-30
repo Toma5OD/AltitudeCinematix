@@ -3,7 +3,7 @@ import SwiperCore, { Navigation, Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./VideoCard.css";
 import { getLatestVideos, readUserData, getUserRatingForVideo, rateVideo } from "../firebaseConfig";
-import { IonRouterLink } from '@ionic/react';
+import { IonRouterLink, IonSpinner } from '@ionic/react';
 import { useSelector } from "react-redux";
 import { IonIcon } from '@ionic/react';
 import { star } from 'ionicons/icons';
@@ -65,57 +65,63 @@ const VideoCard: React.FC<VideoCardProps> = ({ userId }) => {
 
   return (
     <div className="video-card-feed">
-      <Swiper
-        slidesPerView={1}
-        loop={true}
-        loopedSlides={videos.length}
-        navigation={true}
-        mousewheel={true}
-        direction={"horizontal"}
-      >
-        {videos.map((video) => {
-          console.log('Video object:', video);
-          return (
-            <SwiperSlide key={video.id}>
-              <div className="swiper1">
-                <video
-                  src={video.url}
-                  loop
-                  autoPlay
-                  muted
-                  playsInline
-                  controls
-                  className="video-player"
-                />
-                <div className="video-info">
-                  <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
-                    {video.title}
-                  </IonRouterLink>
-                  {video.userData ? (
-                    <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
-                      {video.userData.firstName} {video.userData.lastName}
+      {videos.length > 0 ? (
+        <Swiper
+          slidesPerView={1}
+          loop={true}
+          loopedSlides={videos.length}
+          navigation={true}
+          mousewheel={true}
+          direction={"horizontal"}
+        >
+          {videos.map((video) => {
+            console.log('Video object:', video);
+            return (
+              <SwiperSlide key={video.id}>
+                <div className="swiper1">
+                  <video
+                    src={video.url}
+                    loop
+                    autoPlay
+                    muted
+                    playsInline
+                    controls
+                    className="video-player"
+                  />
+                  <div className="video-info">
+                    <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
+                      {video.title}
                     </IonRouterLink>
-                  ) : (
-                    <span className="video-author">Unknown User</span>
-                  )}
-                  <div className="video-rating">
-                    {renderStars(
-                      video.id,
-                      video.userRating !== undefined
-                        ? video.userRating
-                        : video.ratings && video.ratings[user.id]
-                          ? video.ratings[user.id]
-                          : 0
+                    {video.userData ? (
+                      <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
+                        {video.userData.firstName} {video.userData.lastName}
+                      </IonRouterLink>
+                    ) : (
+                      <span className="video-author">Unknown User</span>
                     )}
+                    <div className="video-rating">
+                      {renderStars(
+                        video.id,
+                        video.userRating !== undefined
+                          ? video.userRating
+                          : video.ratings && video.ratings[user.id]
+                            ? video.ratings[user.id]
+                            : 0
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      ) : (
+        <div className="spinner-container">
+          <IonSpinner name="crescent" />
+        </div>
+      )}
     </div>
-  );
+  );  
 };
 
 export default VideoCard;

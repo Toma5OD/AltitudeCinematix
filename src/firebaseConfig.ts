@@ -517,3 +517,41 @@ export const rateVideo = async (userId: string, videoId: string, rating: number)
 		console.log('Failed to submit rating:', error);
 	}
 };
+
+interface VideoRating {
+	videoId: string;
+	rating: number;
+  }
+
+export const fetchRatingsAndCalculateAverages = async (): Promise<Map<string, number>> => {
+  const ratingsRef = ref(database, 'ratings');
+  const videoRatings: VideoRating[] = [];
+
+  await onValue(ratingsRef, (snapshot) => {
+    const allUserRatings = snapshot.val();
+    for (const userId in allUserRatings) {
+      for (const videoId in allUserRatings[userId]) {
+        const rating = allUserRatings[userId][videoId];
+        videoRatings.push({ videoId, rating });
+      }
+    }
+  });
+
+  const videoRatingSums = new Map<string, number>();
+  const videoRatingCounts = new Map<string, number>();
+
+  for (const ratingData of videoRatings) {
+    const { videoId, rating } = ratingData;
+    videoRatingSums.set(videoId, (videoRatingSums.get(videoId) || 0) + rating);
+    videoRatingCounts.set(videoId, (videoRatingCounts.get(videoId) || 0) + 1);
+  }
+
+  const videoRatingAverages = new Map<string, number>();
+
+  videoRatingSums.forEach((sum, videoId) => {
+	const count = videoRatingCounts.get(videoId) || 1;
+	videoRatingAverages.set(videoId, sum / count);
+  });
+  
+  return videoRatingAverages;
+};

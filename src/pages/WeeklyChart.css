@@ -1,6 +1,23 @@
+.page-background-weekly {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: #f2f2f2;
+}
+
+.weekly-chart-content {
+    width: 60%;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .weekly-chart {
     width: 100%;
-    max-width: 800px;
     margin: 0 auto;
     font-family: Arial, sans-serif;
 }
@@ -8,6 +25,8 @@
 .weekly-chart h1 {
     text-align: center;
     margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #44633f;
 }
 
 .weekly-chart ul {
@@ -19,16 +38,33 @@
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 1rem;
-    background-color: #f1f1f1;
+    background-color: #e8f4e4;
     margin-bottom: 0.5rem;
     border-radius: 4px;
 }
 
+.weekly-chart .title span {
+    color: black;
+  }  
+
 .weekly-chart .rank {
     font-weight: bold;
     margin-right: 0.5rem;
+    color: #3c3c3c;
+}
+
+.weekly-chart .title {
+    font-size: 1.1rem;
+    color: #5c5c5c;
 }
 
 .weekly-chart .rating {
     font-style: italic;
+    color: #707070;
+}
+
+.weekly-chart li:nth-child(1) .title,
+.weekly-chart li:nth-child(2) .title,
+.weekly-chart li:nth-child(3) .title {
+  color: black;
 }

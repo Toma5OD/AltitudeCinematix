@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./VideoVisualizerSmall2.css";
-import { IonRouterLink } from "@ionic/react";
+import { IonSpinner, IonRouterLink } from "@ionic/react";
 
 type Video = {
   id: string;
@@ -20,21 +20,28 @@ interface VideoVisualizerSmall2Props {
 }
 
 const VideoVisualizerSmall3: React.FC<VideoVisualizerSmall2Props> = ({ video, children }) => {
+  const [loading, setLoading] = useState(true);
   return (
     <div className="video-visualizer-small2">
+      {loading && (
+        <div className="spinner-container">
+          <IonSpinner />
+        </div>
+      )}
       <video
         src={video.url}
         poster={video.thumbnail}
         className="video-thumbnail-small2"
         controls
+        onLoadedData={() => setLoading(false)}
       />
       <div className="video-info-small2">
         <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title-small">
           {video.title}
         </IonRouterLink>
         <div className="video-checkbox-container">
-        {children}
-      </div>
+          {children}
+        </div>
         {video.userData ? (
           <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author-small">
             {video.userData.firstName} {video.userData.lastName}
