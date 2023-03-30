@@ -52,73 +52,61 @@ const Register: React.FC = () => {
 				<div className="register-container">
 					<IonText className="register-title">Register</IonText>
 					<IonLoading message="Registering..." duration={0} isOpen={busy} />
-					<IonCard>
-						<IonCardContent>
+					<IonCard class="register-box">
+						<IonCardContent class="login-item">
 							<div className="register-input">
-								<IonItem class="custom">
-									<IonLabel position="floating">Email</IonLabel>
+								<IonItem class="login-item">
 									<IonInput
 										type="email"
 										placeholder="Enter your email"
 										onIonChange={(e: any) => setUsername(e.target.value)}
 										clearInput
-										color="dark"
-										class="custom-input"
+										class="custom22"
 									/>
 								</IonItem>
-								<IonItem class="custom">
-									<IonLabel position="floating">Password</IonLabel>
+								<IonItem class="login-item">
 									<IonInput
 										type="password"
 										placeholder="Enter your password"
 										onIonChange={(e: any) => setPassword(e.target.value)}
 										clearOnEdit
-										color="dark"
-										class="custom-input"
+										class="custom22"
 									/>
 								</IonItem>
-								<IonItem class="custom">
-									<IonLabel position="floating">Confirm Password</IonLabel>
+								<IonItem class="login-item">
 									<IonInput
 										type="password"
 										placeholder="Confirm your password"
 										onIonChange={(e: any) => setCPassword(e.target.value)}
 										clearOnEdit
-										color="dark"
-										class="custom-input"
+										class="custom22"
 									/>
 								</IonItem>
-								<IonItem class="custom">
-									<IonLabel position="floating">First Name</IonLabel>
+								<IonItem class="login-item">
 									<IonInput
 										type="text"
 										placeholder="Enter your first name"
 										onIonChange={(e: any) => setFirstName(e.target.value)}
 										clearOnEdit
-										color="dark"
-										class="custom-input"
+										class="custom22"
 									/>
 								</IonItem>
-								<IonItem class="custom">
-									<IonLabel position="floating">Last Name</IonLabel>
+								<IonItem class="login-item">
 									<IonInput
 										type="text"
 										placeholder="Enter your last name"
 										onIonChange={(e: any) => setLastName(e.target.value)}
 										clearOnEdit
-										color="dark"
-										class="custom-input"
+										class="custom22"
 									/>
 								</IonItem>
-								<IonItem class="custom">
-									<IonLabel position="floating">Phone Number</IonLabel>
+								<IonItem class="login-item">
 									<IonInput
 										type="text"
 										placeholder="Enter your phone number"
 										onIonChange={(e: any) => setPhoneNumber(e.target.value)}
 										clearOnEdit
-										color="dark"
-										class="custom-input"
+										class="custom22"
 									/>
 								</IonItem>
 							</div>

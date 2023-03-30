@@ -8,12 +8,12 @@
   width: 100vw;
 }
 
-ion-card.user-details-container {
+.user-details-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #F5F5DC;
+  background-color: #000000;
   height: 100%;
   width: 100vw;
 }
@@ -37,8 +37,37 @@ ion-card.user-details-container {
   text-align: center;
   margin-top: 1.5rem;
   margin-bottom: 2rem;
-  font-size: 6vw;
-  margin-top: 5vw;
+  font-size: 16vw;
+}
+
+.details-list {
+  background-color: #F5F5DC;
+  color: black;
+  width: 100%;
+  --background: #F5F5DC;
+  --border-color: #000000;
+  --detail-icon-color: rgb(0, 0, 0);
+  --detail-icon-opacity: 1;
+  --detail-icon-font-size: 20px;
+}
+
+.details-item {
+  color: black;
+  width: 100%;
+  --background: #F5F5DC;
+  --border-color: #fff;
+  --detail-icon-color: white;
+  --detail-icon-opacity: 1;
+  --detail-icon-font-size: 20px;
+}
+
+.details-item2 {
+  width: 100%;
+  --background: #F5F5DC;
+  --border-color: #fff;
+  --detail-icon-color: white;
+  --detail-icon-opacity: 1;
+  --detail-icon-font-size: 20px;
 }
 
 .content {
@@ -79,7 +108,6 @@ ion-card.user-details-container {
 }
 
 .user-button {
-  background-color: #74442e;
   color: white;
   font-size: 1.2rem;
   padding: 0.5rem 1rem;
@@ -89,19 +117,9 @@ ion-card.user-details-container {
   margin-right: 0.5rem;
 }
 
-.user-button:hover {
-  background-color: #8f5c39;
-}
-
-.cancel-button {
-  background-color: #d32f2f;
-}
-
-.cancel-button:hover {
-  background-color: #e53935;
-}
-
 .button-group {
+  background-color: #F5F5DC;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -123,6 +141,19 @@ ion-label {
   font-size: 1.2rem;
   font-weight: bold;
   color: #000000;
+}
+
+.details-box{
+  width: 40%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 0.5em rgba(0, 0, 0, 0.1);
+  background-color: #F5F5DC;
 }
 
 @media screen and (max-width: 576px) {

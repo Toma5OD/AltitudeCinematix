@@ -6,6 +6,7 @@
   text-align: center;
   height: 100vh;
   width: 100vw;
+  background-color: #000000;
 }
 
 .centre-column {
@@ -13,13 +14,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 38rem;
+  max-width: 45%;
   height: auto;
   margin: auto;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #F5F5DC;
 }
 
 .login-box{
@@ -30,16 +30,15 @@
   background-color: #F5F5DC;
   padding: 1em;
   border-radius: 0.5rem;
-  box-shadow: 0px 0px 0.5em rgba(0, 0, 0, 0.1);
   max-width: 38rem;
   height: auto;
   margin: auto;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #F5F5DC;
   height: 60vh;
 }
+
 
 .login-title {
   font-family: 'Montserrat', sans-serif;
@@ -53,14 +52,7 @@
 
 .custom {
   background-color: #F5F5DC;
-}
-
-.login-item {
-  --background: #F5F5DC;
-  --border-color: #fff;
-  --detail-icon-color: white;
-  --detail-icon-opacity: 1;
-  --detail-icon-font-size: 20px;
+  color: #000000;
 }
 
 .login-button {

@@ -29,7 +29,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ userId }) => {
             return { ...video, userData, userRating };
           })
         );
-        console.log('Videos with user data and rating:', videosWithUserDataAndRating);
         setVideos(videosWithUserDataAndRating);
       }
     })();
@@ -75,7 +74,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ userId }) => {
           direction={"horizontal"}
         >
           {videos.map((video) => {
-            console.log('Video object:', video);
             return (
               <SwiperSlide key={video.id}>
                 <div className="swiper1">
@@ -88,26 +86,28 @@ const VideoCard: React.FC<VideoCardProps> = ({ userId }) => {
                     controls
                     className="video-player"
                   />
-                  <div className="video-info">
-                    <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
-                      {video.title}
-                    </IonRouterLink>
-                    {video.userData ? (
-                      <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
-                        {video.userData.firstName} {video.userData.lastName}
+                  <div className="video-info-container">
+                    <div className="video-info">
+                      <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
+                        {video.title}
                       </IonRouterLink>
-                    ) : (
-                      <span className="video-author">Unknown User</span>
-                    )}
-                    <div className="video-rating">
-                      {renderStars(
-                        video.id,
-                        video.userRating !== undefined
-                          ? video.userRating
-                          : video.ratings && video.ratings[user.id]
-                            ? video.ratings[user.id]
-                            : 0
+                      {video.userData ? (
+                        <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
+                          {video.userData.firstName} {video.userData.lastName}
+                        </IonRouterLink>
+                      ) : (
+                        <span className="video-author"></span>
                       )}
+                      <div className="video-rating">
+                        {renderStars(
+                          video.id,
+                          video.userRating !== undefined
+                            ? video.userRating
+                            : video.ratings && video.ratings[user.id]
+                              ? video.ratings[user.id]
+                              : 0
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -121,7 +121,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ userId }) => {
         </div>
       )}
     </div>
-  );  
+  );
 };
 
 export default VideoCard;

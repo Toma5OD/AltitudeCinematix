@@ -61,8 +61,6 @@ const PlaylistPage: React.FC = () => {
                 const videos = await getVideosByIds(playlist.videos.map((video) => video.id));
                 return { ...playlist, videos };
             }));
-
-            console.log("Fetched playlists with video data:", updatedPlaylists);
             setPlaylists(updatedPlaylists);
         };
 
@@ -131,7 +129,7 @@ const PlaylistPage: React.FC = () => {
                     </IonHeader>
                 </IonHeader>
 
-                <IonContent>
+                <IonContent style={{ '--background': 'black' }}>
                     <IonModal
                         isOpen={showModal}
                         style={{

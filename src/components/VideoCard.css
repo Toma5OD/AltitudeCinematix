@@ -49,21 +49,6 @@ slide-content {
   border: none;
 }
 
-.video-info {
-  position: absolute;
-  bottom: 8%;
-  left: 3%;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.video-title {
-  margin: 0;
-  font-size: 3rem;
-  font-weight: bold;
-  color: rgb(0, 0, 0);
-}
-
 .video-author {
   margin: 0;
   font-size: 1.2rem;
@@ -124,6 +109,14 @@ slide-content {
 
 .star.active {
   opacity: 1;
+  color: #ffc409;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .video-rating {
@@ -132,9 +125,17 @@ slide-content {
   justify-content: center;
 }
 
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+.video-info {
+  position: absolute;
+  bottom: 8%;
+  left: 3%;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.video-title {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
 }

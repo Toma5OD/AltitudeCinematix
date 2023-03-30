@@ -6,7 +6,6 @@ import {
 } from "@ionic/react";
 import VideoUpload from "../components/VideoUpload";
 import React, { useState } from "react";
-import { toast } from "../toast";
 import Toolbar from "../components/Toolbar";
 import "./Upload.css";
 
@@ -17,13 +16,9 @@ const Upload = () => {
   const handleUploadComplete = (status: boolean) => {
     setUploadComplete(status);
     if (status) {
+      document.dispatchEvent(new CustomEvent("videoUploaded"));
       setShowToast(true);
     }
-  };
-
-  const closeToast = () => {
-    setShowToast(false);
-    setUploadComplete(false);
   };
 
   return (

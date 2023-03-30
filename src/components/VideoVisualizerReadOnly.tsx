@@ -1,6 +1,6 @@
 import React from "react";
 import "./VideoVisualizer.css";
-import { IonSpinner } from "@ionic/react";
+import { IonRouterLink} from "@ionic/react";
 
 type Video = {
   id: string;
@@ -23,7 +23,9 @@ const VideoVisualizerReadOnly: React.FC<VideoVisualizerReadOnlyProps> = ({ video
         className="video-thumbnail"
         controls
       />
-      <h3 className="video-title">{video.title}</h3>
+      <IonRouterLink routerLink={`/single-video/${video.id}`}>
+        <h3 className="video-title">{video.title}</h3>
+      </IonRouterLink>
     </div>
   );
 };

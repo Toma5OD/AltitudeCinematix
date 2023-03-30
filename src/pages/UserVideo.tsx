@@ -118,21 +118,21 @@ const UserVideo = () => {
               <IonRow>
                 <IonCol size="3">
                   <div className="user-info">
-                    <IonAvatar className="profile-picture">
-                      <img className="user-profile" src={user.photoURL} alt="Profile" />
-                      <br />
-                      <br />
-                      <label className="upload-button">
-                        <IonIcon icon={create} />
-                        <input
-                          type="file"
-                          accept="image/*"
-                          ref={fileInputRef}
-                          className="input-file"
-                          onChange={handleFileChange}
-                        />
-                      </label>
-                    </IonAvatar>
+                    <div className="user-info2">
+                      <IonAvatar className="profile-picture">
+                        <label className="upload-button">
+                          <IonIcon icon={create} />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            ref={fileInputRef}
+                            className="input-file"
+                            onChange={handleFileChange}
+                          />
+                        </label>
+                        <img className="user-profile" src={user.photoURL} alt="Profile" />
+                      </IonAvatar>
+                    </div>
                     <br />
                     <br />
                     <br />
@@ -144,22 +144,52 @@ const UserVideo = () => {
                     <IonButton onClick={() => setShowModal(true)} expand="block">
                       Edit Profile
                     </IonButton>
-                    <IonModal isOpen={showModal} className="edit-profile-modal">
-                      <IonContent>
-                        <h2>Edit Profile</h2>
-                        <IonLabel>Bio</IonLabel>
-                        <IonTextarea ref={bioRef} value={user.bio}></IonTextarea>
-                        <IonLabel>User Type</IonLabel>
-                        <IonSelect ref={userTypeRef} value={user.userType}>
-                          <IonSelectOption value="Amateur Drone Pilot">Amateur Drone Pilot</IonSelectOption>
-                          <IonSelectOption value="Professional Drone Pilot">Professional Drone Pilot</IonSelectOption>
-                          <IonSelectOption value="Amateur Videographer">Amateur Videographer</IonSelectOption>
-                          <IonSelectOption value="Professional Videographer">Professional Videographer</IonSelectOption>
-                          <IonSelectOption value="Enthusiast">Enthusiast</IonSelectOption>
-                        </IonSelect>
-                        <IonButton onClick={saveProfile}>Save</IonButton>
-                        <IonButton onClick={() => setShowModal(false)}>
-                          Cancel</IonButton>
+                    <IonModal
+                      style={{
+                        '--width': '60%',
+                        '--height': '90%',
+                        '--border-radius': '10px',
+                        '--box-shadow': '0px 2px 15px rgba(0, 0, 0, 0.1)',
+                      }}
+                      isOpen={showModal}
+                    >
+                      <IonContent style={{ '--background': '#F0F0F0' }}>
+                        <div style={{ paddingTop: '3%', paddingRight: '4%', paddingLeft: '4%', paddingBottom: '1%', }}>
+                          <h1 style={{ textAlign: 'center', color: '#3B3B3B', marginBottom: '20px', fontSize: '3em', fontFamily: 'Montserrat' }}>Edit Profile</h1>
+                          <div style={{ paddingTop: '3%', paddingRight: '4%', paddingLeft: '4%', paddingBottom: '1%', backgroundColor: '#C9E4CA', color: '#1D4E2D', borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}>
+                            <IonLabel style={{ color: '#3B3B3B', marginBottom: '5px' }}>Bio</IonLabel>
+                            <IonTextarea ref={bioRef} value={user.bio} style={{ paddingTop: '3%', marginBottom: '20px' }}></IonTextarea>
+                          </div>
+                          <div style={{
+                            paddingTop: '1%',
+                            paddingRight: '4%',
+                            paddingLeft: '4%',
+                            paddingBottom: '1%',
+                            backgroundColor: '#C9E4CA',
+                            color: '#1D4E2D',
+                            borderBottomLeftRadius: '10px',
+                            borderBottomRightRadius: '10px'
+                          }}>
+                            <IonLabel style={{ marginBottom: '5px' }}>User Type</IonLabel>
+                            <br />
+                            <br />
+                            <IonSelect ref={userTypeRef} value={user.userType} style={{ backgroundColor: '#6FA56E', marginBottom: '20px', borderRadius: '10px', padding: '2%' }}>
+                              <IonSelectOption value="Amateur Drone Pilot">Amateur Drone Pilot</IonSelectOption>
+                              <IonSelectOption value="Professional Drone Pilot">Professional Drone Pilot</IonSelectOption>
+                              <IonSelectOption value="Amateur Videographer">Amateur Videographer</IonSelectOption>
+                              <IonSelectOption value="Professional Videographer">Professional Videographer</IonSelectOption>
+                              <IonSelectOption value="Enthusiast">Enthusiast</IonSelectOption>
+                            </IonSelect>
+                          </div>
+                          <div style={{ paddingTop: '1%', paddingRight: '4%', paddingLeft: '4%', paddingBottom: '1%' }}>
+                            <div style={{ padding: '10px' }}>
+                              <IonButton onClick={saveProfile} style={{ marginRight: '10px', '--background': '#4CAF50', '--color': 'white' }}>Save</IonButton>
+                            </div>
+                            <div style={{ padding: '10px' }}>
+                              <IonButton onClick={() => setShowModal(false)} style={{ '--background': '#F44336', '--color': 'white' }}>Cancel</IonButton>
+                            </div>
+                          </div>
+                        </div>
                       </IonContent>
                     </IonModal>
                     <IonLoading

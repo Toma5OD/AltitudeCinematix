@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import {
+  IonRouterLink,
   IonToast,
 } from "@ionic/react";
-import { deleteVideo } from "../firebaseConfig"; // Import the deleteVideo function
+import { deleteVideo } from "../firebaseConfig";
 import "./VideoVisualizer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -27,6 +28,7 @@ const VideoVisualizer: React.FC<VideoVisualizerProps> = ({ video, refresh }) => 
     try {
       await deleteVideo(video.id, video.userId, video.fileName);
       console.log("Video deleted successfully");
+      document.dispatchEvent(new CustomEvent("videoDeleted"));
       setToastMessage("Video deleted successfully");
       if (typeof refresh === "function") {
         refresh();
@@ -51,7 +53,9 @@ const VideoVisualizer: React.FC<VideoVisualizerProps> = ({ video, refresh }) => 
         className="video-thumbnail"
         controls
       />
-      <h3 className="video-title">{video.title}</h3>
+      <IonRouterLink routerLink={`/single-video/${video.id}`}>
+        <h3 className="video-title">{video.title}</h3>
+      </IonRouterLink>
       <button onClick={handleDelete} className="delete-button">
         <FontAwesomeIcon icon={faTrash} />
         Delete

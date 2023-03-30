@@ -43,7 +43,7 @@ const Login: React.FC = () => {
 		}
 		setBusy(false);
 	}
-	
+
 	async function loginWithGoogleAccount() {
 		setBusy(true);
 		const user: any = await loginWithGoogle();
@@ -61,10 +61,10 @@ const Login: React.FC = () => {
 			setShowToast(true);
 		}
 		setBusy(false);
-	}	
+	}
 
 	return (
-		<IonPage>
+		<IonPage style={{ color:'black' }}>
 			<div className="login-background">
 				<IonToast
 					isOpen={showToast}
@@ -73,7 +73,7 @@ const Login: React.FC = () => {
 					duration={2000}
 					position="top"
 				/>
-				<IonContent className="centre-column">
+				<IonContent style={{ '--background': 'black' }} className="centre-column">
 					<div className="login-box">
 						<IonText className="login-title text-center">Login</IonText>
 						<IonLoading message="Please wait.." duration={0} isOpen={busy} />
@@ -90,6 +90,7 @@ const Login: React.FC = () => {
 									</IonItem>
 									<IonItem class="login-item">
 										<IonInput
+											type="password"
 											placeholder="Enter your password"
 											onIonChange={(e: any) => setPassword(e.target.value)}
 											clearOnEdit

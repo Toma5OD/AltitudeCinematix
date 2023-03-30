@@ -48,7 +48,7 @@ const UserDetails: React.FC = () => {
       }
     }
     fetchUser();
-  }, []);  
+  }, []);
 
   const handleEditClick = () => {
     setEditMode(true);
@@ -61,7 +61,7 @@ const UserDetails: React.FC = () => {
     setFirstName(user?.firstName || '');
     setLastName(user?.lastName || '');
     setPhoneNumber(user?.phoneNumber || '');
-  };  
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -78,7 +78,7 @@ const UserDetails: React.FC = () => {
 
     if (email !== (await getCurrentUser())?.email) {
       await updateEmail(email);
-    }    
+    }
 
     if (newPassword) {
       await updateUserPassword(newPassword);
@@ -98,29 +98,29 @@ const UserDetails: React.FC = () => {
       <IonContent>
         <div className='main-page'>
           <IonCard className="user-details-container">
-            <IonCard className="user-box">
+            <IonCard class="details-box">
               <div className="title-user">
                 <h1>User Details</h1>
               </div>
-              <IonList className="content">
+              <IonList class="details-list">
                 {user && !editMode ? (
                   <>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel>
                         <strong>First Name:</strong> {user.firstName}
                       </IonLabel>
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel>
                         <strong>Last Name:</strong> {user.lastName}
                       </IonLabel>
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel>
                         <strong>Email:</strong> {email}
                       </IonLabel>
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel>
                         <strong>Password:</strong>
                       </IonLabel>
@@ -128,17 +128,16 @@ const UserDetails: React.FC = () => {
                         ••••••
                       </IonText>
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel>
                         <strong>Phone Number:</strong> {user.phoneNumber}
                       </IonLabel>
                     </IonItem>
-
-                    <IonButton onClick={handleEditClick}>Edit</IonButton>
+                    <IonButton className="login-button" onClick={handleEditClick}>Edit</IonButton>
                   </>
                 ) : (
                   <form onSubmit={handleSubmit}>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel position="stacked">
                         Email:
                       </IonLabel>
@@ -148,7 +147,7 @@ const UserDetails: React.FC = () => {
                         onIonChange={(event) => setEmail(event.detail.value!)}
                       />
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel position="stacked">
                         Current Password:
                       </IonLabel>
@@ -159,7 +158,7 @@ const UserDetails: React.FC = () => {
                         placeholder="Enter current password"
                       />
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel position="stacked">
                         New Password:
                       </IonLabel>
@@ -170,7 +169,7 @@ const UserDetails: React.FC = () => {
                         placeholder="Enter new password"
                       />
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel position="stacked">
                         First Name:
                       </IonLabel>
@@ -180,7 +179,7 @@ const UserDetails: React.FC = () => {
                         onIonChange={(event) => setFirstName(event.detail.value!)}
                       />
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel position="stacked">
                         Last Name:
                       </IonLabel>
@@ -190,7 +189,7 @@ const UserDetails: React.FC = () => {
                         onIonChange={(event) => setLastName(event.detail.value!)}
                       />
                     </IonItem>
-                    <IonItem className="user-item">
+                    <IonItem class="details-item">
                       <IonLabel position="stacked">
                         Phone Number:
                       </IonLabel>
@@ -201,8 +200,8 @@ const UserDetails: React.FC = () => {
                       />
                     </IonItem>
                     <div className="button-group">
-                      <IonButton type="submit" className="user-button">Save</IonButton>
-                      <IonButton onClick={handleCancelClick} className="user-button cancel-button">Cancel</IonButton>
+                      <IonButton type="submit" className="login-button">Save</IonButton>
+                      <IonButton onClick={handleCancelClick} className="login-button">Cancel</IonButton>
                     </div>
                   </form>
                 )}

@@ -16,19 +16,6 @@
   align-items: center;
 }
 
-.welcome-container {
-  display: flex;
-  align-items: center;
-  margin-left: 1rem;
-  flex-direction: column;
-}
-
-.welcome-message {
-  margin-left: 1rem;
-  font-size: 1.125rem;
-  font-weight: normal;
-  color: #fff;
-}
 
 .profile-button-container {
   display: flex;
@@ -57,4 +44,8 @@
   display: flex;
   align-items: center;
   margin-right: 1rem;
+}
+
+.button:hover {
+  --background: #81d6a7;
 }
