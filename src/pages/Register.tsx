@@ -8,7 +8,6 @@ import {
 	IonCard,
 	IonCardContent,
 	IonItem,
-	IonLabel,
 } from "@ionic/react";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";

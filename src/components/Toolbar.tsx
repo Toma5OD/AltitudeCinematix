@@ -1,6 +1,5 @@
 import {
     IonToolbar,
-    IonTitle,
     IonButton,
     IonRouterLink,
 } from "@ionic/react";
@@ -24,46 +23,43 @@ const Toolbar: React.FC<ToolbarProps> = ({ title }) => {
     }
 
     return (
-        <IonToolbar style={{ height: "7.5vh" }}>
-            <div className="toolbar-content">
-                <div className="title-container">
-                    <IonTitle className="title-toolbar">{title}</IonTitle>
+        <IonToolbar style={{ height: "20vh" }}>
+            <div className="custom-toolbar1">
+                <div slot="end">
+                    <IonRouterLink routerLink="/myvideos">
+                        <IonButton class="toolbar-button">My Videos</IonButton>
+                    </IonRouterLink>
                 </div>
-            </div>
-            <div slot="end" className="dashboard-button-container">
-                <IonRouterLink routerLink="/myvideos">
-                    <IonButton className="button">My Videos</IonButton>
-                </IonRouterLink>
-            </div>
-            <div slot="end" className="playlists-button-container">
-                <IonRouterLink routerLink="/playlists">
-                    <IonButton className="button">Playlists</IonButton>
-                </IonRouterLink>
-            </div>
-            <div slot="end" className="dashboard-button-container">
-                <IonRouterLink routerLink="/weeklychart">
-                    <IonButton className="button">Weekly Chart</IonButton>
-                </IonRouterLink>
-            </div>
-            <div slot="end" className="dashboard-button-container">
-                <IonRouterLink routerLink="/dashboard">
-                    <IonButton className="button">Dashboard</IonButton>
-                </IonRouterLink>
-            </div>
-            <div slot="end" className="dashboard-button-container">
-                <IonRouterLink routerLink="/upload">
-                    <IonButton className="button">Upload</IonButton>
-                </IonRouterLink>
-            </div>
-            <div slot="end" className="user-details-button-container">
-                <IonRouterLink routerLink="/userProfile">
-                    <IonButton className="button">
-                        <MdPerson />
-                    </IonButton>
-                </IonRouterLink>
-            </div>
-            <div slot="end" className="logout-button-container">
-                <IonButton onClick={logout} className="button">Logout</IonButton>
+                <div slot="end">
+                    <IonRouterLink routerLink="/playlists">
+                        <IonButton class="toolbar-button">Playlists</IonButton>
+                    </IonRouterLink>
+                </div>
+                <div slot="end">
+                    <IonRouterLink routerLink="/weeklychart">
+                        <IonButton class="toolbar-button">Weekly Chart</IonButton>
+                    </IonRouterLink>
+                </div>
+                <div slot="end">
+                    <IonRouterLink routerLink="/upload">
+                        <IonButton class="toolbar-button">Upload</IonButton>
+                    </IonRouterLink>
+                </div>
+                <div slot="end">
+                    <IonRouterLink routerLink="/dashboard">
+                        <IonButton class="toolbar-button">Dashboard</IonButton>
+                    </IonRouterLink>
+                </div>
+                <div slot="end">
+                    <IonRouterLink routerLink="/userProfile">
+                        <IonButton class="toolbar-button">
+                            <MdPerson />
+                        </IonButton>
+                    </IonRouterLink>
+                </div>
+                <div slot="end">
+                    <IonButton onClick={logout} class="toolbar-button">Logout</IonButton>
+                </div>
             </div>
         </IonToolbar>
     );

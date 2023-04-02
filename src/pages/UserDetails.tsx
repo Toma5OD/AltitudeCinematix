@@ -13,7 +13,7 @@ import {
   IonButton,
   IonCard,
 } from '@ionic/react';
-import Toolbar from '../components/Toolbar';
+import Toolbar from '../components/Toolbar2';
 
 interface User {
   firstName: string;

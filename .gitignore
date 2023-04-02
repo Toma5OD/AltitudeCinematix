@@ -9,7 +9,7 @@ firebase-adminsdk.json
 functions/node_modules
 functions/package-lock.json
 functions/.gitignore
-
+.firebase
 # testing
 /coverage
 

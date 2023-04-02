@@ -8,6 +8,7 @@ import "./Dashboard.css";
 import VideoCard from "../components/VideoCard";
 import Toolbar from "../components/Toolbar";
 import { getCurrentUser } from "../firebaseConfig";
+import Logo from "../components/Logo";
 
 const Dashboard: React.FC = () => {
 	const [videoUploadCounter, setVideoUploadCounter] = useState(0);
@@ -27,7 +28,7 @@ const Dashboard: React.FC = () => {
 	useEffect(() => {
 		const updateVideoFeedOnDeletion = () => {
 			setVideoDeletionCounter((prevState) => prevState + 1);
-		  };
+		};
 
 		const updateVideoFeed = () => {
 			setVideoUploadCounter((prevState) => prevState + 1);
@@ -44,11 +45,14 @@ const Dashboard: React.FC = () => {
 	}, []);
 
 	return (
-		<IonPage>
-			<IonHeader>
-				<Toolbar title='Dashboard' />
+		<IonPage >
+			<Logo />
+			<IonHeader className="custom-background-page">
+				<div className="toolbar-container">
+					<Toolbar title='Dashboard' />
+				</div>
 			</IonHeader>
-			<IonContent>
+			<IonContent fullscreen>
 				<div className="video-feed">
 					<div className="video-card">
 						{uid && <VideoCard userId={uid} key={videoUploadCounter + videoDeletionCounter} />}

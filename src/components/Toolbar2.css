@@ -1,0 +1,47 @@
+
+.toolbar-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 10vh;
+  flex-grow: 1;
+  background-color: #000000
+}
+
+.title-container3 {
+  padding:1%;
+  display: flex;
+  align-items: center;
+  margin-left:16%;
+}
+
+.title-container4 {
+  --background: transparent;
+  border-radius: 6%;
+  margin-top:12%;
+  margin-bottom:1%;
+  height:100px;
+  padding:0%;
+  display: flex;
+  align-items: center;
+}
+
+.button-container2 {
+  height:10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+}
+
+.button5 {
+  font-family: 'Montserrat', sans-serif;
+  --background: url('https://protectaqua.com/Admin/Pictures/fd4a197e-a9ee-4606-b16f-ac7725a32274Ah%C5%9Fap%20Nedir%20ve%20Neden%20Tercih%20Edilir-B.jpg');
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.button5:hover {
+  --background: linear-gradient(rgba(255, 225, 0, 0.08), rgba(0, 0, 005, 0.4)), url('https://protectaqua.com/Admin/Pictures/fd4a197e-a9ee-4606-b16f-ac7725a32274Ah%C5%9Fap%20Nedir%20ve%20Neden%20Tercih%20Edilir-B.jpg');
+}

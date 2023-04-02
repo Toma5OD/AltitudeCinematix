@@ -50,10 +50,10 @@
   --background-hover: #000000;
   --background-activated: #343A40;
   --background-focused: #343A40;
-  
+
   --color: #ffffff;
   --color-hover: #e9c37a;
-  
+
   --box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -67,4 +67,35 @@
   --background-focused: #88f4be;
   --color-hover: #e9c37a;
   --box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Media queries for different screen sizes */
+@media screen and (max-width: 1024px) {
+  .home-container {
+    max-width: 60%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .home-container {
+    max-width: 80%;
+  }
+
+  .home-logo {
+    height: 50vw;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .home-container {
+    max-width: 90%;
+  }
+
+  .title-home {
+    font-size: 1.5rem;
+  }
+
+  .home-logo {
+    height: 60vw;
+  }
 }

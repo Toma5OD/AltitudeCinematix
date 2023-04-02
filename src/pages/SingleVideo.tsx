@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { IonContent, IonHeader, IonPage } from '@ionic/react';
-import Toolbar from '../components/Toolbar';
+import Toolbar from '../components/Toolbar2';
 import { getVideoById, readUserData } from '../firebaseConfig';
 import './SingleVideo.css';
 

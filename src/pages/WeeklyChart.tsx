@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ref, onValue, off } from 'firebase/database';
 import { database } from '../firebaseConfig';
 import './WeeklyChart.css';
-import Toolbar from "../components/Toolbar";
+import Toolbar from "../components/Toolbar2";
 import {
     IonRouterLink,
     IonHeader,

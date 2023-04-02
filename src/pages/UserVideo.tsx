@@ -17,7 +17,7 @@ import {
   IonAvatar,
   IonIcon,
 } from "@ionic/react";
-import Toolbar from "../components/Toolbar";
+import Toolbar from "../components/Toolbar2";
 import VideoVisualizer from "../components/VideoVisualizer";
 import "./UserVideo.css";
 import { getCurrentUser, readUserData, updateUserDataFree, uploadProfilePicture } from "../firebaseConfig";

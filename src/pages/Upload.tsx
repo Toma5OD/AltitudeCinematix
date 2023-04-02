@@ -2,11 +2,10 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonToast
 } from "@ionic/react";
 import VideoUpload from "../components/VideoUpload";
 import React, { useState } from "react";
-import Toolbar from "../components/Toolbar";
+import Toolbar from "../components/Toolbar2";
 import "./Upload.css";
 
 const Upload = () => {
@@ -35,6 +34,7 @@ const Upload = () => {
             </div>
             <div className="video-upload-instructions">
               <h3 className="h3-title">Instructions</h3>
+              Videos must be in landscape orientation and maintain a minimum resolution of 720p!
               <ol className="video-upload-instructions">
                 <li>Select a video file from your computer</li>
                 <li>Click the &quot;Upload&quot; button</li>

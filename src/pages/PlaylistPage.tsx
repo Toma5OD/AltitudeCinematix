@@ -16,9 +16,8 @@ import {
     IonTextarea,
     IonCheckbox,
     IonLoading,
-    IonCard,
 } from "@ionic/react";
-import Toolbar from "../components/Toolbar";
+import Toolbar from "../components/Toolbar2";
 import { createPlaylist, getUserPlaylists, getRecentVideos, getVideosByIds, deletePlaylist, getCurrentUser } from "../firebaseConfig";
 import VideoVisualizerSmall3 from "../components/VideoVisualizerSmall3";
 import VideoVisualizerSmall2 from "../components/VideoVisualizerSmall2";

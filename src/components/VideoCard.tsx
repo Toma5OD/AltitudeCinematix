@@ -7,6 +7,7 @@ import { IonRouterLink, IonSpinner } from '@ionic/react';
 import { useSelector } from "react-redux";
 import { IonIcon } from '@ionic/react';
 import { star } from 'ionicons/icons';
+import VideoInfo from "./VideoInfo";
 
 SwiperCore.use([Navigation, Autoplay]);
 
@@ -86,30 +87,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ userId }) => {
                     controls
                     className="video-player"
                   />
-                  <div className="video-info-container">
-                    <div className="video-info">
-                      <IonRouterLink routerLink={`/single-video/${video.id}`} className="video-title">
-                        {video.title}
-                      </IonRouterLink>
-                      {video.userData ? (
-                        <IonRouterLink routerLink={`/other-user-profile/${video.userId}`} className="video-author">
-                          {video.userData.firstName} {video.userData.lastName}
-                        </IonRouterLink>
-                      ) : (
-                        <span className="video-author"></span>
-                      )}
-                      <div className="video-rating">
-                        {renderStars(
-                          video.id,
-                          video.userRating !== undefined
-                            ? video.userRating
-                            : video.ratings && video.ratings[user.id]
-                              ? video.ratings[user.id]
-                              : 0
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <VideoInfo video={video} userId={userId} handleRateVideo={handleRateVideo} />
                 </div>
               </SwiperSlide>
             );

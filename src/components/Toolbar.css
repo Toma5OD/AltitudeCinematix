@@ -1,51 +1,34 @@
-.title-toolbar {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 2rem;
-}
-
-.toolbar-content {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 7.5vh;
-  flex-grow: 1;
-}
-
-.title-container {
+.custom-button1 {
+  height:max-content;
   display: flex;
   align-items: center;
-}
-
-
-.profile-button-container {
-  display: flex;
   justify-content: center;
-  align-items: center;
+  margin-right: 1.2rem;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.25); /* Add a box shadow */
+  color: white;
 }
 
-.dashboard-button-container {
+
+
+.toolbar-button:hover {
+  --background: linear-gradient(rgba(255, 225, 0, 0.08), rgba(0, 0, 005, 0.4)), url('https://protectaqua.com/Admin/Pictures/fd4a197e-a9ee-4606-b16f-ac7725a32274Ah%C5%9Fap%20Nedir%20ve%20Neden%20Tercih%20Edilir-B.jpg');
+}
+
+
+.custom-toolbar1 {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+  height: 20vh;
+  padding: 30px;
+  
 }
 
-.profile-button-container ion-button {
-  margin-right: 16px;
-}
-
-.logout-button-container {
-  display: flex;
-  align-items: center;
-}
-
-.button {
-  font-family: 'Montserrat', sans-serif;
-  --background: #93e9be;
-  display: flex;
-  align-items: center;
-  margin-right: 1rem;
-}
-
-.button:hover {
-  --background: #81d6a7;
+.toolbar-button {
+  --background: url('https://protectaqua.com/Admin/Pictures/fd4a197e-a9ee-4606-b16f-ac7725a32274Ah%C5%9Fap%20Nedir%20ve%20Neden%20Tercih%20Edilir-B.jpg');
+  --background-activated: rgba(0, 0, 0, 0.2);
+  --background-focused: rgba(0, 0, 0, 0.2);
+  padding-left: 15px;
 }

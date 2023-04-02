@@ -17,19 +17,19 @@ ion-grid{
 .user-video-container {
   display: flex;
   flex-wrap: wrap;
-  background-color: rgb(0, 0, 0);
+  background-color: #2c3e50;
 }
 
 .user-video-content {
-  height: 92.5vh;
+  height: 90vh;
 }
 
 .user-video-content1 {
-  height: 92.5vh;
+  height: 90vh;
 }
 
 .uv-background {
-  background-color: rgb(0, 0, 0);
+  background-color: #2c3e50;
   height: 100%;
   width: 100vw;
 }

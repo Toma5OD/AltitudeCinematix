@@ -10,11 +10,8 @@
 }
 
 .swiper1 {
-  width: 100vw;
-  height: 92.5vh;
-  overflow-x: auto;
-  overflow-y: hidden;
-  border: none;
+  height: 100%;
+  width: 100%;
 }
 
 .swiper-wrapper {
@@ -35,7 +32,7 @@ iframe {
 }
 
 slide-content {
-  height: '92.5vh';
+  height: '100vh';
   width: '100vw';
   display: 'flex';
 }
@@ -43,7 +40,7 @@ slide-content {
 .swiper1 {
   position: relative;
   width: 100vw;
-  height: 92.5vh;
+  height: 100vh;
   overflow-x: auto;
   overflow-y: hidden;
   border: none;
@@ -57,7 +54,7 @@ slide-content {
 
 .video-player {
   width: 100vw;
-  height: 92.5vh;
+  height: 100vh;
   object-fit: cover;
 }
 

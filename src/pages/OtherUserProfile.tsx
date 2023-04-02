@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IonContent, IonLoading, IonHeader, IonPage, IonGrid, IonRow, IonCol, IonAvatar } from "@ionic/react";
-import Toolbar from "../components/Toolbar";
+import Toolbar from "../components/Toolbar2";
 import VideoVisualizerReadOnly from "../components/VideoVisualizerReadOnly";
 import "./OtherUserProfile.css";
 import { useParams } from "react-router-dom";
