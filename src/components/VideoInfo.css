@@ -25,6 +25,7 @@
     align-items: center;
     width: 100%;
     justify-content: space-between;
+    flex-shrink: 0;
   }
   
   .video-rating {
@@ -44,9 +45,11 @@
   }
   
   .author-avatar {
+    min-width: 30px;
     width: 30px;
     height: 30px;
-    margin-right: 8px;
+    padding: 2px;
+    margin-right: 16px;
   }
   
   .user-profile {
